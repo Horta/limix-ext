@@ -18,6 +18,8 @@ _letras = np.array([['A', 'C'],
  ['G', 'T']])
 
 def _write_geno(bgX, folder, prefix):
+    if not np.all(np.asarray(bgX, int) == bgX):
+        raise Exception('Genetic markers expected to be integers.')
     fname = "%s.geno" % prefix
     np.savetxt(join(folder, fname), bgX.T, '%d', '')
     with open(join(folder, fname), 'rb+') as filehandle:

@@ -1,34 +1,13 @@
-from time import time
-from limix.utils.preprocess import covar_rescale
+from numpy import asarray
 import numpy as np
+from limix_util.data_ import gower_kinship_normalization
+from core import test_ltmlm
 
-def bernoulli_scan(y, K, prevalence, X):
-    from lib import test_ltmlm
-
-    y = y.copy()
-    X = X.copy()
-    K = K.copy()
-
-    print("-- LTMLM began --")
-    RV = dict()
-    RV['pv'] = np.full(X.shape[1], np.nan, float)
-
-    start = time()
-    try:
-        K = covar_rescale(K)
-        (h2, pvals, _) = test_ltmlm(X, K, y, prevalence)
-        pvals = np.asarray(pvals, float).ravel()
-        pvals[np.logical_not(np.isfinite(pvals))] = 1.
-        RV['pv'][:] = pvals
-        RV['error_status'] = 0
-        RV['error_msg'] = None
-
-    except Exception as e:
-        RV['error_status'] = 1
-        RV['error_msg'] = str(e)
-        print RV['error_msg']
-    RV['elapsed'] = time()-start
-
-    print("-- LTMLM finished (%.3f s) --" % RV['elapsed'])
-
-    return RV
+def scan(y, X, K, prevalence):
+    K = gower_kinship_normalization(asarray(K, float))
+    X = asarray(X, float).copy()
+    y = asarray(y, float).copy()
+    (_, pvals, _) = test_ltmlm(X, K, y, prevalence)
+    pvals = np.asarray(pvals, float).ravel()
+    pvals[np.logical_not(np.isfinite(pvals))] = 1.
+    return pvals
