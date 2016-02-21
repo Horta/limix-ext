@@ -2,10 +2,27 @@ from __future__ import print_function
 import logging
 import numpy as np
 from leap_gwas import gwas
-import leap.leapUtils as leapUtils
+import scipy.linalg as la
 from calc_h2 import calc_h2
 import fastlmm.util.VertexCut as vc
 from probit import probit
+import time
+
+def eigenDecompose(XXT):
+    logger = logging.getLogger(__file__)
+    t0 = time.time()
+    logger.debug('Computing eigendecomposition...')
+    s,U = la.eigh(XXT)
+    if (np.min(s) < -1e-4):
+        raise Exception('Negative eigenvalues found')
+    s[s<0]=0
+    ind = np.argsort(s)
+    ind = ind[s>1e-12]
+    U = U[:, ind]
+    s = s[ind]
+    logger.debug('Done in %0.2f seconds', time.time()-t0)
+    return s,U
+
 
 def apply_this_kinship(G, K, y, prevalence, nsnps_back, cutoff,
                        covariates=None):
@@ -21,7 +38,7 @@ def apply_this_kinship(G, K, y, prevalence, nsnps_back, cutoff,
     vinds = set(range(K.shape[0])) - remove_set
     vinds = np.array(list(vinds), int)
 
-    S, U = leapUtils.eigenDecompose(K[np.ix_(vinds, vinds)])
+    S, U = eigenDecompose(K[np.ix_(vinds, vinds)])
     eigen = dict(XXT=K, arr_1=S, arr_0=U)
     # S, U = leapUtils.eigenDecompose(K[vinds, vinds])
     n = len(vinds)
