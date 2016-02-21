@@ -3,9 +3,10 @@ if os.path.exists('MANIFEST'): os.remove('MANIFEST')
 import sys
 import imp
 import textwrap
+import subprocess
 
 try:
-    import numpy
+    imp.find_module('numpy')
 except ImportError:
     print('Fatal: could not import numpy. Please, make sure it is installed.')
     sys.exit(1)
@@ -121,12 +122,28 @@ def setup_package():
     filename = os.path.join(dirname, 'limix_ext', 'version.py')
     write_version_py(VERSION, ISRELEASED, filename='limix_ext/version.py')
 
+    build_requires = ['limix_util', 'leap_gwas', 'fastlmm']
+
+    try:
+        imp.find_module('rpy2')
+    except ImportError:
+        # print subprocess.check_call(['which', 'conda'], shell=True)
+        try:
+            subprocess.check_call('which conda', shell=True)
+        except subprocess.CalledProcessError:
+            build_requires += ['rpy2']
+        else:
+            cmd = 'conda install -y -c https://conda.anaconda.org/r rpy2'
+            subprocess.check_call(cmd, shell=True)
+
     metadata = dict(
         name='limix-ext',
         maintainer = "Limix Developers",
         maintainer_email = "horta@ebi.ac.uk",
         test_suite='setup.get_test_suite',
-        packages=['limix_ext']
+        packages=['limix_ext'],
+        install_requires=build_requires,
+        setup_requires=build_requires
     )
 
     run_build = parse_setuppy_commands()
@@ -134,14 +151,7 @@ def setup_package():
     from setuptools import setup
 
     if run_build:
-
-        # Use setuptools for these commands (they don't work well or at all
-        # with distutils).  For normal builds use distutils.
-        try:
-            from setuptools import setup
-        except ImportError:
-            from distutils.core import setup
-
+        from numpy.distutils.core import setup
         metadata['configuration'] = configuration
     else:
         if len(sys.argv) >= 2 and sys.argv[1] == 'bdist_wheel':

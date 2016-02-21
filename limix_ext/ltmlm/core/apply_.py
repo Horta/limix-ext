@@ -2,7 +2,8 @@ import numpy as np
 import re
 from os.path import join
 from subprocess import call
-from gwarped.util.file import open_temp_folder
+from limix_util.path_ import temp_folder
+from limix_util.system_ import platform
 import logging
 import os
 import subprocess
@@ -218,7 +219,7 @@ def test_ltmlm_geno_bg(fgX, bgX, y, prevalence):
     y = np.asarray(y, dtype=int)
 
     prefix = "example"
-    with open_temp_folder() as folder:
+    with temp_folder() as folder:
         indf = _write_ind(y, folder, prefix)
 
         genof_bg = _write_geno(bgX, folder, prefix + "_for_grm")
@@ -248,10 +249,17 @@ def test_ltmlm_geno_bg(fgX, bgX, y, prevalence):
 
     return (h2, pvals, stats)
 
+def  _check_os():
+    if platform() == 'linux':
+        return True
+    return False
 
 
 def test_ltmlm(X, K, y, prevalence):
     import scipy.stats as st
+
+    if not _check_os():
+        raise SystemError('The underlying platform is not supported by LTMLM.')
 
     threshold = str(-st.norm.ppf(prevalence))
     heritMax = '1.0'
@@ -259,7 +267,7 @@ def test_ltmlm(X, K, y, prevalence):
     y = np.asarray(y, dtype=int)
 
     prefix = "example"
-    with open_temp_folder() as folder:
+    with temp_folder() as folder:
         indf = _write_ind(y, folder, prefix)
 
         genof_fg = _write_geno(X, folder, prefix)

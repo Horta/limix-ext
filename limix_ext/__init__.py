@@ -1,3 +1,3 @@
 import gcta
-import leap
+import leap_ as leap
 import ltmlm

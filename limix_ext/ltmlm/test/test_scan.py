@@ -1,11 +1,13 @@
 import numpy as np
 import unittest
 from limix_ext.ltmlm.scan import scan
+from limix_util.system_ import platform
 
 class TestScan(unittest.TestCase):
     def setUp(self):
         pass
 
+    @unittest.skipUnless(platform() == "linux", "requires Linux")
     def test_bernoulli(self):
         random = np.random.RandomState(981)
         n = 500
