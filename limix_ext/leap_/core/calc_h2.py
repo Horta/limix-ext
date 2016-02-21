@@ -1,3 +1,4 @@
+import logging
 import numpy as np
 import scipy.stats as stats
 import sklearn.linear_model
@@ -25,8 +26,8 @@ def calcLiabThreholds(U, S, keepArr, phe, numRemovePCs, prev):
 
 
 def calcH2Continuous_twotails(XXT, phe, keepArr, prev, h2coeff):
-
-    print 'computing h2 for a two-tails ascertained study...'
+    logger = logging.getLogger(__file__)
+    logger.debug('computing h2 for a two-tails ascertained study.')
 
     XXT = XXT[np.ix_(keepArr, keepArr)]
     phe = phe[keepArr]
@@ -121,7 +122,7 @@ def calcH2Binary(XXT, phe, probs, thresholds, keepArr, prev, h2coeff):
 
 
 def calc_h2(pheno, prev, eigen, keepArr, numRemovePCs, h2coeff, lowtail):
-
+    logger = logging.getLogger(__file__)
     # pheno = leapUtils._fixup_pheno(pheno)
 
     #Extract phenotype
@@ -141,7 +142,8 @@ def calc_h2(pheno, prev, eigen, keepArr, numRemovePCs, h2coeff, lowtail):
             S,U = leapUtils.eigenDecompose(XXT)
         else:
             S, U = eigen['arr_1'], eigen['arr_0']
-        print 'Removing the top', numRemovePCs, 'PCs from the kinship matrix'
+        logger.info('Removing the top %d PCs from the kinship matrix',
+                    numRemovePCs)
         XXT -= (U[:, -numRemovePCs:]*S[-numRemovePCs:]).dot(U[:, -numRemovePCs:].T)
 
     #Determine if this is a case-control study
@@ -150,7 +152,7 @@ def calc_h2(pheno, prev, eigen, keepArr, numRemovePCs, h2coeff, lowtail):
     isCaseControl = (pheUnique.shape[0] == 2)
 
     if isCaseControl:
-        print 'Computing h2 for a binary phenotype'
+        logger.debug('Computing h2 for a binary phenotype')
         pheMean = phe.mean()
         phe[phe <= pheMean] = 0
         phe[phe > pheMean] = 1
@@ -159,12 +161,15 @@ def calc_h2(pheno, prev, eigen, keepArr, numRemovePCs, h2coeff, lowtail):
             h2 = calcH2Binary(XXT, phe, probs, thresholds, keepArr, prev, h2coeff)
         else: h2 = calcH2Binary(XXT, phe, None, None, keepArr, prev, h2coeff)
     else:
-        print 'Computing h2 for a continuous phenotype'
+        logger.debug('Computing h2 for a continuous phenotype')
         if (not lowtail): h2 = calcH2Continuous(XXT, phe, keepArr, prev, h2coeff)
         else: h2 = calcH2Continuous_twotails(XXT, phe, keepArr, prev, h2coeff)
 
-    if (h2 <= 0): raise Exception("Negative heritability found. Exitting...")
-    if (np.isnan(h2)): raise Exception("Invalid heritability estimate. Please double-check your input for any errors.")
+    if (h2 <= 0):
+        raise Exception("Negative heritability found. Exitting...")
+    if (np.isnan(h2)):
+        raise Exception("Invalid heritability estimate. "+
+                        "Please double-check your input for any errors.")
 
-    print 'h2: %0.6f'%h2
+    logger.debug('h2: %0.6f', h2)
     return h2
