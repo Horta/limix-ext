@@ -2,7 +2,7 @@ import logging
 import numpy as np
 import scipy.stats as stats
 import sklearn.linear_model
-import leap.leapUtils as leapUtils
+from eigd import eigenDecompose
 
 def calcLiabThreholds(U, S, keepArr, phe, numRemovePCs, prev):
 
