@@ -15,6 +15,7 @@ class TestHeritability(unittest.TestCase):
 
         M = np.ones((n, 1)) * 0.4
         G = random.randint(3, size=(n, p))
+        Gi = G.copy()
         G = np.asarray(G, dtype=float)
         G -= G.mean(axis=0)
         G /= G.std(axis=0)
@@ -29,9 +30,8 @@ class TestHeritability(unittest.TestCase):
         y = np.zeros_like(z)
         y[z>0] = 1.
         prevalence = 0.5
-        h2 = estimate(G, y, prevalence)
-        print h2
-        # self.assertAlmostEqual(h2, 0.523246787326)
+        h2 = estimate(Gi, y, prevalence)
+        self.assertAlmostEqual(h2, 0.329104)
 
 if __name__ == '__main__':
     unittest.main()

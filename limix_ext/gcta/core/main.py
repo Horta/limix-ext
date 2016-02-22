@@ -9,6 +9,7 @@ from limix_util.plink_ import create_map
 from limix_util.plink_ import create_phen
 from limix_util.plink_ import create_bed
 from limix_util.system_ import platform
+from limix_util.array_ import isint_alike
 
 def _create_their_kinship(bed_folder, prefix):
     if platform() != 'linux':
@@ -17,6 +18,7 @@ def _create_their_kinship(bed_folder, prefix):
 
     print "Creating their kinship matrix..."
     cwd = os.path.abspath(os.path.dirname(__file__))
+
     shell_list = ['./gcta64', '--bfile', os.path.join(bed_folder, prefix),
                   '--autosome', '--make-grm',
                   '--out', os.path.join(bed_folder, prefix)]
@@ -52,7 +54,7 @@ def _run_gcta(prefix, phen_filename, preva, diag_one=False, nthreads = 1):
     shutil.rmtree(outfolder)
     return r
 
-def run_gcta(bed_folder, prefix, y, prevalence, diag_one=False):
+def run_gcta(bed_folder, prefix, prevalence, diag_one=False):
     phen_filename = os.path.join(prefix + '.phe')
 
     result = _run_gcta(os.path.join(bed_folder, prefix), os.path.join(bed_folder, phen_filename),
@@ -60,13 +62,18 @@ def run_gcta(bed_folder, prefix, y, prevalence, diag_one=False):
                        diag_one = diag_one, nthreads = 1)
     return result
 
-def estimate_h2_gcta(nbgX, y, prevalence):
+def estimate_h2_gcta(G, y, prevalence):
+
+    if not isint_alike(G):
+        raise ValueError('The genetic markers matrix must contain only integer'+
+                         'values.')
+
     outdir = tempfile.mkdtemp()
 
     try:
-        chromosome = np.ones(nbgX.shape[1])
-        prepare_for_their_kinship(outdir, 'data', nbgX, y, chromosome)
-        result = run_gcta(outdir, 'data', y, prevalence)
+        chromosome = np.ones(G.shape[1])
+        prepare_for_their_kinship(outdir, 'data', G, y, chromosome)
+        result = run_gcta(outdir, 'data', prevalence)
     except Exception as e:
         shutil.rmtree(outdir)
         print str(e)
