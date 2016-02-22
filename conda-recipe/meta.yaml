@@ -1,0 +1,24 @@
+package:
+  name: limix_ext
+  version: 0.1.0
+
+requirements:
+  build:
+    - python
+    - numpy
+    - cython
+    - setuptools
+    - fastlmm
+
+  run:
+    - python
+    - numpy
+    - scipy
+    - numba
+    - setuptools
+    - cython
+    - fastlmm
+
+about:
+  home: http://www.ebi.ac.uk
+  license: Private

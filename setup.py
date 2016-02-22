@@ -122,7 +122,7 @@ def setup_package():
     filename = os.path.join(dirname, 'limix_ext', 'version.py')
     write_version_py(VERSION, ISRELEASED, filename='limix_ext/version.py')
 
-    build_requires = ['limix_util', 'leap_gwas', 'fastlmm']
+    build_requires = ['limix_util', 'fastlmm']
 
     try:
         imp.find_module('rpy2')
