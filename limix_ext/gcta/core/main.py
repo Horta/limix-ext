@@ -1,4 +1,5 @@
 import os
+import logging
 import numpy as np
 import subprocess
 import shutil
@@ -12,22 +13,30 @@ from limix_util.system_ import platform
 from limix_util.array_ import isint_alike
 
 def _create_their_kinship(bed_folder, prefix):
+    logger = logging.getLogger(__file__)
+
     if platform() != 'linux':
         raise OSError('The %s platform is currently not supported.'
                       % platform())
 
-    print "Creating their kinship matrix..."
+    logger.debug("Creating GCTA kinship matrix.")
     cwd = os.path.abspath(os.path.dirname(__file__))
 
-    shell_list = ['./gcta64', '--bfile', os.path.join(bed_folder, prefix),
+    cmd = ['./gcta64', '--bfile', os.path.join(bed_folder, prefix),
                   '--autosome', '--make-grm',
                   '--out', os.path.join(bed_folder, prefix)]
-    print "Running shell list %s..." % str(shell_list)
-    p = subprocess.Popen(shell_list, cwd=cwd)
-    p.wait()
+
+    logger.debug("Running shell list %s.", str(cmd))
+    p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                         cwd=cwd)
+    out, err = p.communicate()
+    logger.debug(out)
+    if len(err) > 0:
+        logger.warn(err)
 
 def prepare_for_their_kinship(folder, prefix, G, y, chromosome):
-    print "Preparing for their kinship..."
+    logger = logging.getLogger(__file__)
+    logger.debug("Preparing for their kinship.")
     G = G.astype(int)
     chromosome = chromosome.astype(int)
 
@@ -41,17 +50,27 @@ def prepare_for_their_kinship(folder, prefix, G, y, chromosome):
 
 def _run_gcta(prefix, phen_filename, preva, diag_one=False, nthreads = 1):
     outfolder = tempfile.mkdtemp()
-    shell_list = ['gcta64', '--grm', prefix, '--pheno', phen_filename,
+    cmd = ['./gcta64', '--grm', prefix, '--pheno', phen_filename,
                   '--prevalence', '%.7f' % preva,
                   '--reml', '--out', os.path.join(outfolder, 'result'), '--thread-num', str(nthreads)]
     if diag_one:
-        shell_list.append('--reml-diag-one')
+        cmd.append('--reml-diag-one')
 
-    print "Running shell list %s..." % str(shell_list)
-    p = subprocess.Popen(shell_list)
-    p.wait()
+    logger = logging.getLogger(__file__)
+    logger.debug("Running shell list %s.", str(cmd))
+
+    cwd = os.path.abspath(os.path.dirname(__file__))
+    p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                         cwd=cwd)
+
+    out, err = p.communicate()
+    logger.debug(out)
+    if len(err) > 0:
+        logger.warn(err)
+
     r = Result(os.path.join(outfolder, 'result.hsq'))
     shutil.rmtree(outfolder)
+    
     return r
 
 def run_gcta(bed_folder, prefix, prevalence, diag_one=False):
