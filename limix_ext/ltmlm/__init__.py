@@ -1,2 +1,2 @@
 import heritability
-import scan
+from scan import scan

@@ -1,1 +1,1 @@
-import scan
+from scan import scan
