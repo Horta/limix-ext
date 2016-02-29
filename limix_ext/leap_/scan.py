@@ -1,7 +1,7 @@
 from numpy import asarray
 import numpy as np
 from core import leap_scan
-from limix_util.data_ import gower_kinship_normalization
+from limix_util.kinship import gower_kinship_normalization
 
 def scan(y, covariate, X, K, K_nsnps, prevalence):
     K = gower_kinship_normalization(asarray(K, float))

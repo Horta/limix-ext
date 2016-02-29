@@ -1,7 +1,7 @@
 import numpy as np
 from numpy import asarray
-from limix_util.h2 import h2_observed_space_correct
-from limix_util.data_ import gower_kinship_normalization
+from limix_util.heritability import h2_observed_space_correct
+from limix_util.kinship import gower_kinship_normalization
 import core
 
 def estimate(y, covariate, K, prevalence):

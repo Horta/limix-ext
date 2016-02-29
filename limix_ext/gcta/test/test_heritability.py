@@ -1,7 +1,7 @@
 import numpy as np
 import unittest
 from limix_ext.gcta.heritability import estimate
-from limix_util.system_ import platform
+from limix_misc.sys_ import platform
 
 class TestHeritability(unittest.TestCase):
     def setUp(self):

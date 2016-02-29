@@ -5,12 +5,9 @@ import subprocess
 import shutil
 from result import Result
 import tempfile
-from limix_util.plink_ import create_ped
-from limix_util.plink_ import create_map
-from limix_util.plink_ import create_phen
-from limix_util.plink_ import create_bed
-from limix_util.system_ import platform
-from limix_util.array_ import isint_alike
+from limix_misc import plink_
+from limix_misc.sys_ import platform
+from limix_misc.array_ import isint_alike
 
 def _create_their_kinship(bed_folder, prefix):
     logger = logging.getLogger(__file__)
@@ -41,10 +38,10 @@ def prepare_for_their_kinship(folder, prefix, G, y, chromosome):
     chromosome = chromosome.astype(int)
 
     filepath = os.path.join(folder, prefix)
-    create_ped(filepath + '.ped', y, G)
-    create_map(filepath + '.map', chromosome)
-    create_phen(filepath + '.phe', y)
-    create_bed(filepath)
+    plink_.create_ped(filepath + '.ped', y, G)
+    plink_.create_map(filepath + '.map', chromosome)
+    plink_.create_phen(filepath + '.phe', y)
+    plink_.create_bed(filepath)
 
     _create_their_kinship(folder, prefix)
 
@@ -70,7 +67,7 @@ def _run_gcta(prefix, phen_filename, preva, diag_one=False, nthreads = 1):
 
     r = Result(os.path.join(outfolder, 'result.hsq'))
     shutil.rmtree(outfolder)
-    
+
     return r
 
 def run_gcta(bed_folder, prefix, prevalence, diag_one=False):

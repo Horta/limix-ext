@@ -2,8 +2,8 @@ import numpy as np
 import re
 from os.path import join
 from subprocess import call
-from limix_util.path_ import temp_folder
-from limix_util.system_ import platform
+from limix_misc.path_ import temp_folder
+from limix_misc.sys_ import platform
 import logging
 import os
 import subprocess
