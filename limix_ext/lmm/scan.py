@@ -8,6 +8,7 @@ def scan(y, covariate, X, K):
     K = gower_kinship_normalization(asarray(K, float))
     X = asarray(X, float).copy()
     y = asarray(y, float).copy()
+    covariate = asarray(covariate, float).copy()
 
     y -= y.mean()
     std = y.std()

@@ -7,6 +7,7 @@ def scan(y, covariate, X, K, K_nsnps, prevalence):
     K = gower_kinship_normalization(asarray(K, float))
     X = asarray(X, float).copy()
     y = asarray(y, float).copy()
+    covariate = asarray(covariate, float).copy()
 
     ok = X.std(0) > 0
     pvals = np.ones(X.shape[1])
