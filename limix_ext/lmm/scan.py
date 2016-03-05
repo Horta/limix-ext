@@ -2,7 +2,7 @@ from __future__ import absolute_import
 from numpy import asarray
 import numpy as np
 from .core import train_associations
-from limix_util.kinship import gower_kinship_normalization
+from limix_tool.kinship import gower_kinship_normalization
 
 def scan(y, covariate, X, K):
     K = gower_kinship_normalization(asarray(K, float))

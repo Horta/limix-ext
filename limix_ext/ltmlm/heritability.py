@@ -1,5 +1,5 @@
 from numpy import asarray
-from limix_util.kinship import gower_kinship_normalization
+from limix_tool.kinship import gower_kinship_normalization
 from core import estimate_h2
 
 def estimate(y, K, prevalence):

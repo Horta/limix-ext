@@ -5,9 +5,9 @@ import subprocess
 import shutil
 from result import Result
 import tempfile
-from limix_misc import plink_
-from limix_misc.sys_ import platform
-from limix_misc.array_ import isint_alike
+from limix_tool import plink_
+from limix_util.sys_ import platform
+from limix_util.array_ import isint_alike
 
 def _create_their_kinship(bed_folder, prefix):
     logger = logging.getLogger(__file__)

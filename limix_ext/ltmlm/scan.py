@@ -1,6 +1,6 @@
 from numpy import asarray
 import numpy as np
-from limix_util.kinship import gower_kinship_normalization
+from limix_tool.kinship import gower_kinship_normalization
 from core import test_ltmlm
 
 def scan(y, X, K, prevalence):
