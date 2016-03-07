@@ -147,7 +147,7 @@ def train_associations(X,Y,K,C=None,addBiasTerm=False,numintervalsAlt=0,ldeltami
     else:
         arg2 = ldelta
     #return LL0, LL, pval, ldelta0, sigg20, beta0, ldelta, sigg2, beta
-    return lods, arg2, ldelta0, sigg20, beta0
+    return 2*lods, arg2, ldelta0, sigg20, beta0
 
 def train_interact(X,Y,K,interactants=None,covariates=None,addBiasTerm=True,numintervalsAlt=0,ldeltaminAlt=-1.0,ldeltamaxAlt=1.0,numintervals0=10,ldeltamin0=-5.0,ldeltamax0=5.0):
     """ compute all pvalues

@@ -4,7 +4,7 @@ import sys
 from setuptools import setup, find_packages
 
 PKG_NAME = 'limix_ext'
-VERSION  = '0.1.1'
+VERSION  = '0.1.2'
 
 try:
     import numpy as np

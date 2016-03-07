@@ -17,11 +17,14 @@ def scan(y, covariate, X, K):
 
     y = y[:, np.newaxis]
 
-    (_, pvals, _, _, _) = train_associations(X, y, K, C=covariate,
+    (stats, pvals, _, _, _) = train_associations(X, y, K, C=covariate,
                                              addBiasTerm=False)
 
     pvals = np.asarray(pvals, float).ravel()
-    pvals[np.logical_not(np.isfinite(pvals))] = 1.
+    nok = np.logical_not(np.isfinite(pvals))
+    pvals[nok] = 1.
 
+    stats = np.asarray(stats, float).ravel()
+    stats[nok] = 0.
 
-    return pvals
+    return (stats, pvals)
