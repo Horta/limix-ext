@@ -12,7 +12,6 @@ def scan(y, covariate, X, K, K_nsnps, prevalence):
     ok = X.std(0) > 0
     pvals = np.ones(X.shape[1])
     stats = np.zeros(X.shape[1])
-
     (stats_, pvals_, _) = leap_scan(X[:,ok], K, y, prevalence, K_nsnps,
                                 cutoff=np.inf, covariates=covariate)
     pvals[ok] = np.asarray(pvals_, float).ravel()
