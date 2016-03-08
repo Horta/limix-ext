@@ -32,7 +32,7 @@ class TestScan(unittest.TestCase):
 
         X = Ginit[:,:int(Ginit.shape[1]/2)]
 
-        pvals = scan(y, X, Kg, prevalence)
+        pvals = scan(y, X, Kg, prevalence)[1]
 
         opvals = [ 0.57518908,  0.83497672,  0.62043047,  0.76377594,
                    0.71293504,  0.1431161,

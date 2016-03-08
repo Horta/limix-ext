@@ -31,7 +31,7 @@ class TestScan(unittest.TestCase):
 
         X = Ginit[:,:int(Ginit.shape[1]/2)]
 
-        pvals = scan(y, M, X, Kg, K_nsnps, prevalence)
+        (stats, pvals) = scan(y, M, X, Kg, K_nsnps, prevalence)
         opvals = [ 0.451066, 0.426365, 0.408062, 0.915992, 0.732097, 0.053328,
                    0.361699, 0.283354, 0.620856, 0.746104, 0.824283, 0.865038,
                    0.251931, 0.412815, 0.759132, 0.91902 , 0.529719, 0.582175,
