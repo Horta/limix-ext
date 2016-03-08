@@ -8,6 +8,7 @@ import tempfile
 from limix_tool import plink_
 from limix_util.sys_ import platform
 from limix_util.array_ import isint_alike
+from limix_util.path_ import temp_folder
 
 def _create_their_kinship(bed_folder, prefix):
     logger = logging.getLogger(__file__)
@@ -69,6 +70,19 @@ def _run_gcta(prefix, phen_filename, preva, diag_one=False, nthreads = 1):
     shutil.rmtree(outfolder)
 
     return r
+
+def kinship_estimation(G, y, prevalence):
+    chromosome = np.ones(G.shape[1])
+    with temp_folder() as outdir:
+        prepare_for_their_kinship(outdir, 'data', G, y, chromosome)
+        g = np.fromfile(os.path.join(outdir, 'data.grm.bin'), dtype='f4')
+        k = g.shape[0]
+        n = (-1 + np.sqrt(1+8*k))/2.
+        n = int(n)
+        K = np.empty((n,n))
+        K[np.triu_indices_from(K)] = g
+        K.T[np.triu_indices_from(K)] = g
+    return K
 
 def run_gcta(bed_folder, prefix, prevalence, diag_one=False):
     phen_filename = os.path.join(prefix + '.phe')
