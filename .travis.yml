@@ -48,5 +48,5 @@ before_install:
   - pip install -r requirements.txt
 
 
-install: python setup.py install
-script: python setup.py test
+install: env export PATH="$HOME/plink-1.07-x86_64:$PATH" python setup.py install
+script: env export PATH="$HOME/plink-1.07-x86_64:$PATH" python setup.py test
