@@ -14,8 +14,6 @@ addons:
     packages:
       - build-essential
       - python-dev
-      - python-numpy
-      - python-scipy
       - libc6
       - g++
       - gfortran
@@ -38,7 +36,7 @@ before_install:
 
   # Replace dep1 dep2 ... with your dependencies
   - conda install conda-build
-  - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION numpy scipy setuptools cython
+  - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION setuptools numpy scipy cython numba
   - conda install -n test-environment -c r rpy2
   - source activate test-environment
 
