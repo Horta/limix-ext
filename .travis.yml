@@ -18,7 +18,7 @@ addons:
       - g++
       - gfortran
       - libgsl0ldbl
-      - plink
+      - zip
 
 before_install:
   # We do this conditionally because it saves us some downloading if the
@@ -35,6 +35,10 @@ before_install:
   - conda update -q conda
   # Useful for debugging any issues with conda
   - conda info -a
+
+  - wget http://pngu.mgh.harvard.edu/~purcell/plink/dist/plink-1.07-x86_64.zip
+  - unzip plink-1.07-x86_64.zip
+  - export PATH="$HOME/plink-1.07-x86_64:$PATH"
 
   # Replace dep1 dep2 ... with your dependencies
   - conda install conda-build
