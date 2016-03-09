@@ -5,8 +5,8 @@ from core import test_ltmlm
 
 def scan(y, X, K, prevalence):
     K = gower_kinship_normalization(asarray(K, float))
-    X = asarray(X, float).copy()
-    y = asarray(y, float).copy()
+    X = asarray(X, float)
+    y = asarray(y, float)
     (_, pvals, stats) = test_ltmlm(X, K, y, prevalence)
     pvals = np.asarray(pvals, float).ravel()
     nok = np.logical_not(np.isfinite(pvals))
