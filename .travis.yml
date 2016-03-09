@@ -39,6 +39,7 @@ before_install:
   - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION setuptools numpy scipy cython numba
   - conda install -n test-environment -c r rpy2
   - source activate test-environment
+  - pip install -r requirements.txt
 
 
 install: python setup.py install
