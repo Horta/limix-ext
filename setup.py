@@ -63,7 +63,7 @@ def setup_package():
 
     write_version()
 
-    install_requires = ['limix_util', 'fastlmm']
+    install_requires = ['limix_util', 'limix_tool', 'fastlmm']
     setup_requires = []
 
     metadata = dict(
