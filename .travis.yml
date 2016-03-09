@@ -17,6 +17,7 @@ addons:
       - libc6
       - g++
       - gfortran
+      - libgsl0ldbl
 
 before_install:
   # We do this conditionally because it saves us some downloading if the
