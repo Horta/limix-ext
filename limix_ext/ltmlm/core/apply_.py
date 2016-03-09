@@ -134,8 +134,9 @@ def _convert2bed(folder, eig2bedf):
 
 def _apply_gcta(folder, prefix):
     fname = join(folder, prefix)
-    cmd = "gcta64 --bfile "+fname+" --make-grm --out "+fname
-    return_code = call(cmd, shell=True)
+    cmd = "./gcta64 --bfile "+fname+" --make-grm --out "+fname
+    cwd = os.path.join(os.path.abspath(os.path.dirname(__file__)), '../../gcta/core')
+    return_code = call(cmd, shell=True, cwd=cwd)
     if return_code != 0:
         raise Exception("Error while running gcta64 for file %s." % fname)
 
