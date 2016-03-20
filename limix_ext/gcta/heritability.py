@@ -8,7 +8,8 @@ def estimate(G, y, prevalence):
 
 def _bernoulli_estimator(G, y, prevalence):
     h2 = estimate_h2(G, y, prevalence)
-    return np.asscalar(np.asarray(h2, float))
+    h2 = np.asscalar(np.asarray(h2, float))
+    return min(max(h2, 0.), 1.)
 
 if __name__ == '__main__':
     random = np.random.RandomState(842)
