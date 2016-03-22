@@ -5,7 +5,7 @@ from core import test_ltmlm
 
 def scan(y, X, K, prevalence):
     K = gower_kinship_normalization(asarray(K, float))
-    X = asarray(X, float)
+    X = asarray(X, int)
     y = asarray(y, float)
     (_, pvals, stats) = test_ltmlm(X, K, y, prevalence)
     pvals = np.asarray(pvals, float).ravel()
