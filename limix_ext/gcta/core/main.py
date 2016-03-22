@@ -11,7 +11,7 @@ from limix_util.array_ import isint_alike
 from limix_util.path_ import temp_folder
 
 def _create_their_kinship(bed_folder, prefix):
-    logger = logging.getLogger(__file__)
+    logger = logging.getLogger(__name__)
 
     if platform() != 'linux':
         raise OSError('The %s platform is currently not supported.'
@@ -33,7 +33,7 @@ def _create_their_kinship(bed_folder, prefix):
         logger.warn(err)
 
 def prepare_for_their_kinship(folder, prefix, G, y, chromosome):
-    logger = logging.getLogger(__file__)
+    logger = logging.getLogger(__name__)
     logger.debug("Preparing for their kinship.")
     G = G.astype(int)
     chromosome = chromosome.astype(int)
@@ -54,7 +54,7 @@ def _run_gcta(prefix, phen_filename, preva, diag_one=False, nthreads = 1):
     if diag_one:
         cmd.append('--reml-diag-one')
 
-    logger = logging.getLogger(__file__)
+    logger = logging.getLogger(__name__)
     logger.debug("Running shell list %s.", str(cmd))
 
     cwd = os.path.abspath(os.path.dirname(__file__))

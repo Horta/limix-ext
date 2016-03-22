@@ -10,7 +10,7 @@ from eigd import eigenDecompose
 def apply_this_kinship(G, K, y, prevalence, nsnps_back, cutoff,
                        covariates=None):
 
-    logger = logging.getLogger(__file__)
+    logger = logging.getLogger(__name__)
     nK = K.copy()
 
     #These are the indexes of the IIDs to remove
@@ -26,9 +26,10 @@ def apply_this_kinship(G, K, y, prevalence, nsnps_back, cutoff,
     # S, U = leapUtils.eigenDecompose(K[vinds, vinds])
     n = len(vinds)
 
+    logger.info('Heritability estimation')
     h2 = calc_h2(dict(vals=y), prevalence, eigen, keepArr=vinds,
                  h2coeff=1.0, numRemovePCs=10, lowtail=False)
-
+    logger.info('Heritability estimation finished')
     if h2 >= 1.:
         logger.warn("LEAP found h2 greater than or equal to 1: %f. %s", h2,
                     "Clipping it to 0.9.")
@@ -38,8 +39,11 @@ def apply_this_kinship(G, K, y, prevalence, nsnps_back, cutoff,
                     "Clipping it to 0.1.")
         h2 = 0.1
 
+    logger.info('Probit fitting')
     liabs = probit(nsnps_back, n, dict(vals=y), h2, prevalence, U, S,
                    covar=covariates)
 
+    logger.info('gwas method started')
     (stats, pvals) = gwas(nK, G, liabs['vals'], h2, covariate=covariates)
+    logger.info('gwas method finished')
     return (stats, pvals, h2)

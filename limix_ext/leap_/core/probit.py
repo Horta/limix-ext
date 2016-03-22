@@ -12,7 +12,7 @@ def probit(nsnps, nsamples, pheno, h2, prev, U, S, outFile=None, covar=None,
            thresholds=None, nofail=False, numSkipTopPCs=0, mineig=1e-3,
            hess=False, recenter=True, maxFixedIters=100, epsilon=1e-3):
 
-    logger = logging.getLogger(__file__)
+    logger = logging.getLogger(__name__)
     # bed, pheno = leapUtils._fixupBedAndPheno(bed, pheno)
     biid = _create_iid(nsamples)
 
@@ -119,7 +119,7 @@ def evalProbitReg(beta, X, cases, controls, thresholds, invRegParam, normPDF,
 
 def probitRegression(X, y, thresholds, numSNPs, numFixedFeatures, h2, useHess, maxFixedIters, epsilon, nofail):
 
-    logger = logging.getLogger(__file__)
+    logger = logging.getLogger(__name__)
 
     regParam = h2 /  float(numSNPs)
     Linreg = sklearn.linear_model.Ridge(alpha=1.0/(2*regParam), fit_intercept=False, normalize=False, solver='lsqr')

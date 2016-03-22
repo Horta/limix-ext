@@ -117,7 +117,7 @@ def _write_chi2file(folder, genof, snpf, indf, covf, prefix):
     with open(join(folder, fname), "w") as f:
         f.write(conf_str)
 
-    logger = logging.getLogger(__file__)
+    logger = logging.getLogger(__name__)
     logger.debug("-- LTMLM configuration file begins --")
     logger.debug(conf_str)
     logger.debug("-- LTMLM configuration file ends --")
@@ -152,7 +152,7 @@ def _convert_gcta2cov(folder, indf, prefix):
            join(folder, covf)+"' %s" % rscript
 
     try:
-        logger = logging.getLogger(__file__)
+        logger = logging.getLogger(__name__)
         logger.debug(check_output(cmd, shell=True))
     except CalledProcessError:
         raise Exception("Error while running R/convertGctaGrmToCov.R "+
@@ -168,7 +168,7 @@ def _run_ltmlm(folder, threshold, chi2f, heritMax):
     cmd = join(cfolder, "LTMLM") + " -t "+threshold+"   -p "\
            +chi2f+"  -H "+heritMax
 
-    logger = logging.getLogger(__file__)
+    logger = logging.getLogger(__name__)
     logger.debug("Shell command: %s", cmd)
     p = subprocess.Popen(cmd, stdin=subprocess.PIPE,
                          stdout=subprocess.PIPE,

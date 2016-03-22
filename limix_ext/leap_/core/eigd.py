@@ -4,7 +4,7 @@ import logging
 import numpy as np
 
 def eigenDecompose(XXT):
-    logger = logging.getLogger(__file__)
+    logger = logging.getLogger(__name__)
     t0 = time.time()
     logger.debug('Computing eigendecomposition...')
     s,U = la.eigh(XXT)

@@ -26,7 +26,7 @@ def calcLiabThreholds(U, S, keepArr, phe, numRemovePCs, prev):
 
 
 def calcH2Continuous_twotails(XXT, phe, keepArr, prev, h2coeff):
-    logger = logging.getLogger(__file__)
+    logger = logging.getLogger(__name__)
     logger.debug('computing h2 for a two-tails ascertained study.')
 
     XXT = XXT[np.ix_(keepArr, keepArr)]
@@ -122,7 +122,7 @@ def calcH2Binary(XXT, phe, probs, thresholds, keepArr, prev, h2coeff):
 
 
 def calc_h2(pheno, prev, eigen, keepArr, numRemovePCs, h2coeff, lowtail):
-    logger = logging.getLogger(__file__)
+    logger = logging.getLogger(__name__)
     # pheno = leapUtils._fixup_pheno(pheno)
 
     #Extract phenotype

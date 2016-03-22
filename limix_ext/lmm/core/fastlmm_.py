@@ -95,9 +95,10 @@ def train_associations(X,Y,K,C=None,addBiasTerm=False,numintervalsAlt=0,ldeltami
     """ compute all pvalues
     If numintervalsAlt==0 use EMMA-X trick (keep delta fixed over alternative models)
     """
-    logger = logging.getLogger(__file__)
+    logger = logging.getLogger(__name__)
     n,s=X.shape;
     n_pheno=Y.shape[1];
+    logger.info('Eigen decomposition')
     S,U=LA.eigh(K);
     UY=SP.dot(U.T,Y);
     UX=SP.dot(U.T,X);
@@ -121,14 +122,17 @@ def train_associations(X,Y,K,C=None,addBiasTerm=False,numintervalsAlt=0,ldeltami
     pval=SP.ones((n_pheno,s))*(-SP.inf);
     for phen in SP.arange(n_pheno):
         UY_=UY[:,phen];
+        logger.info('Delta optimization')
         ldelta0[phen]=optdelta(UY_,Ucovariate,S,ldeltanull=None,numintervals=numintervals0,ldeltamin=ldeltamin0,ldeltamax=ldeltamax0);
         logger.debug('log(delta) was fitted to %e.', ldelta0)
         #print ldelta0
         #print "ldelta0 \n"
+        logger.info('nLL evaluation')
         nLL0_, beta0_, sigg20_=nLLeval(ldelta0[phen],UY_,Ucovariate,S,MLparams=True);
         beta0[phen,:]=beta0_;
         sigg20[phen]=sigg20_;
         LL0[phen]=-nLL0_;
+        logger.info('Running over each candidate for alternative model')
         for snp in SP.arange(s):
             UX_=SP.hstack((UX[:,snp:snp+1],Ucovariate));
             if numintervalsAlt==0: #EMMA-X trick #fast version, no refitting of detla
