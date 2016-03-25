@@ -45,7 +45,6 @@ before_install:
   - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION setuptools numpy scipy cython numba
   - conda install -n test-environment -c r rpy2
   - source activate test-environment
-  - pip install -r requirements.txt
 
 
 install: env PATH="$HOME/plink-1.07-x86_64:$PATH" python setup.py install
