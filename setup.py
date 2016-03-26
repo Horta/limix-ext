@@ -22,13 +22,6 @@ except ImportError:
     sys.exit(1)
 
 try:
-    import cython
-except ImportError:
-    print("Error: cython package couldn't be found."+
-          " Please, install it so I can proceed.")
-    sys.exit(1)
-
-try:
     import rpy2
 except ImportError:
     print("Error: rpy2 package couldn't be found."+
