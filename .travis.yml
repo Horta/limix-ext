@@ -39,9 +39,9 @@ before_install:
   - conda install -q -n test-environment -c r rpy2
   - source activate test-environment
 
-install:
-    - export PATH="$HOME/plink-1.07-x86_64:$HOME/miniconda/bin:$PATH"
-    - python setup.py install
-script:
-    - export PATH="$HOME/plink-1.07-x86_64:$HOME/miniconda/bin:$PATH"
-    - python setup.py test
+install: python setup.py install
+
+before_script:
+    - export PATH="$HOME/plink-1.07-x86_64:$PATH"
+
+script: python setup.py test
