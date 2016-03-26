@@ -18,7 +18,6 @@ addons:
 
 python:
   - 2.7
-  - 3.5
 
 before_install:
   - if [[ "$TRAVIS_PYTHON_VERSION" == "2.7" ]]; then
@@ -40,20 +39,11 @@ before_install:
 install: python setup.py install
 
 before_script:
-    - pwd
-    - ls
     - pushd $HOME
-    - pwd
-    - ls
     - wget http://pngu.mgh.harvard.edu/~purcell/plink/dist/plink-1.07-x86_64.zip
-    - ls
     - unzip plink-1.07-x86_64.zip
-    - ls
     - export PATH="$HOME/plink-1.07-x86_64:$PATH"
-    - ls
     - hash -r
     - popd
-    - ls $HOME/plink-1.07-x86_64
-    - which plink
 
 script: python setup.py test
