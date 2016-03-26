@@ -44,5 +44,7 @@ install: python setup.py install
 before_script:
     - export PATH="$HOME/plink-1.07-x86_64:$PATH"
     - hash -r
+    - ls $HOME/plink-1.07-x86_64
+    - which plink
 
 script: python setup.py test
