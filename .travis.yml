@@ -9,6 +9,9 @@ python:
   - 2.7
   # - 3.5
 
+env:
+    - PATH="$HOME/plink-1.07-x86_64:$HOME/miniconda/bin:$PATH"
+
 addons:
   apt:
     packages:
@@ -29,7 +32,6 @@ before_install:
       wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
     fi
   - bash miniconda.sh -b -p $HOME/miniconda
-  - export PATH="$HOME/miniconda/bin:$PATH"
   - hash -r
   - conda config --set always_yes yes --set changeps1 no
   - conda update -q conda
@@ -38,7 +40,6 @@ before_install:
 
   - wget http://pngu.mgh.harvard.edu/~purcell/plink/dist/plink-1.07-x86_64.zip
   - unzip plink-1.07-x86_64.zip
-  - export PATH="$HOME/plink-1.07-x86_64:$PATH"
 
   # Replace dep1 dep2 ... with your dependencies
   - conda install conda-build
@@ -47,5 +48,5 @@ before_install:
   - source activate test-environment
 
 
-install: env PATH="$HOME/plink-1.07-x86_64:$PATH" python setup.py install
-script: env PATH="$HOME/plink-1.07-x86_64:$PATH" python setup.py test
+install: python setup.py install
+script: python setup.py test
