@@ -42,6 +42,9 @@ before_install:
 install: python setup.py install
 
 before_script:
+    - wget http://pngu.mgh.harvard.edu/~purcell/plink/dist/plink-1.07-x86_64.zip
+    - unzip plink-1.07-x86_64.zip
     - export PATH="$HOME/plink-1.07-x86_64:$PATH"
+    - hash -r
 
 script: python setup.py test
