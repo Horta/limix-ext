@@ -5,13 +5,16 @@ from .core import train_associations
 from limix_tool.kinship import gower_kinship_normalization
 import logging
 
-def scan(y, covariate, X, K):
+def scan(y, covariate, X, K, ntrials=None):
     logger = logging.getLogger(__name__)
     logger.info('Gower normalizing')
     K = gower_kinship_normalization(asarray(K, float))
     X = asarray(X, float).copy()
     y = asarray(y, float).copy()
     covariate = asarray(covariate, float).copy()
+
+    if ntrials is not None:
+        y /= ntrials
 
     y -= y.mean()
     std = y.std()
