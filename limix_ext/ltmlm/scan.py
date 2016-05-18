@@ -2,15 +2,27 @@ from numpy import asarray
 import numpy as np
 from limix_tool.kinship import gower_kinship_normalization
 from core import test_ltmlm
+from limix_tool.genotype import maf
 
 def scan(y, X, K, prevalence):
     K = gower_kinship_normalization(asarray(K, float))
     X = asarray(X, int)
     y = asarray(y, float)
-    (_, pvals, stats) = test_ltmlm(X, K, y, prevalence)
-    pvals = np.asarray(pvals, float).ravel()
-    nok = np.logical_not(np.isfinite(pvals))
-    pvals[nok] = 1.
-    stats = np.asarray(stats, float).ravel()
-    stats[nok] = 0.
+
+    mafs = maf(X)
+
+    ok = np.full(X.shape[1], True, dtype=bool)
+    ok[mafs <= 0.05] = False
+
+    (_, pvals_, stats_) = test_ltmlm(X[:,ok], K, y, prevalence)
+
+    pvals = np.ones(X.shape[1])
+    pvals[ok] = np.asarray(pvals_, float).ravel()
+
+    stats = np.zeros(X.shape[1])
+    stats[ok] = np.asarray(stats_, float).ravel()
+
+    if not np.all(np.isfinite(pvals)):
+        raise ValueError("There is some non-finite stuff in this p-values.")
+
     return (stats, pvals)

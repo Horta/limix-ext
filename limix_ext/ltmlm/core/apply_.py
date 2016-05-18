@@ -174,6 +174,11 @@ def _run_ltmlm(folder, threshold, chi2f, heritMax):
                          stdout=subprocess.PIPE,
                          shell=True)
     output, output_err = p.communicate()
+    err_msg = ('Warning every extreme allele frequency may mess up' +
+               ' estimates or normalized SNPs')
+    if err_msg in output:
+        raise ValueError('LTMLM thinks your genotype matrix is messed up: %s'
+                         % err_msg)
     return_code = 0 if output_err is None else 1
 
     output = re.sub(r"Diagonal component of Tinv.*\n[^\n]*\n", "", output)

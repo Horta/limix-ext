@@ -5,13 +5,21 @@ from limix_tool.heritability import h2_observed_space_correct
 from limix_tool.kinship import gower_kinship_normalization
 import core
 
-def estimate(y, covariate, K, prevalence, ntrials=None):
+def estimate(y, covariate, K, prevalence, ntrials=None, **kwargs):
     y = asarray(y, float).copy()
     if ntrials is None:
-        return _bernoulli_estimator(y, covariate, K, prevalence)
-    return _binomial_estimator(y, covariate, K, ntrials, prevalence)
+        return _bernoulli_estimator(y, covariate, K, prevalence, **kwargs)
+    return _binomial_estimator(y, covariate, K, ntrials, prevalence, **kwargs)
 
-def _binomial_estimator(y, covariate, K, ntrials, prevalence):
+def _binomial_estimator(y, covariate, K, ntrials, prevalence, **kwargs):
+
+    do_snoise = kwargs.get('estimate_sampling_noise', False)
+
+    sign2 = 0
+    if do_snoise:
+        p = y / ntrials
+        sign2 = np.mean(ntrials * p * (1 - p))
+
     y = y.copy() / ntrials
     covariate = covariate.copy()
     y -= y.mean()
@@ -34,7 +42,7 @@ def _binomial_estimator(y, covariate, K, ntrials, prevalence):
 
     delta = np.exp(ldelta)
     sige2 = delta * sigg2
-    h2 = sigg2 / (sigg2 + sige2 + varc)
+    h2 = sigg2 / (sigg2 + sige2 + varc + sign2)
     h2 = np.asscalar(np.asarray(h2, float))
 
     h2 = h2_observed_space_correct(h2, prevalence, prevalence)
@@ -44,7 +52,7 @@ def _binomial_estimator(y, covariate, K, ntrials, prevalence):
     return h2
 
 
-def _bernoulli_estimator(y, covariate, K, prevalence):
+def _bernoulli_estimator(y, covariate, K, prevalence, **kwargs):
     y = y.copy()
     covariate = covariate.copy()
     ascertainment = float(sum(y==1.)) / len(y)
