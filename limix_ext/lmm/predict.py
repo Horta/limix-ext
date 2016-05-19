@@ -1,6 +1,6 @@
 from __future__ import division
 import numpy as np
-from sklearn import gaussian_process
+import GPy
 from numpy import asarray
 import core
 
@@ -9,11 +9,11 @@ def predict(y, covariate_train, G_train, covariate_test, G_test):
     G_train = np.hstack([covariate_train, G_train])
     G_test = np.hstack([covariate_test, G_test])
 
-    gp = gaussian_process.GaussianProcess(theta0=1e-2, thetaL=1e-4, thetaU=1e-1)
-    gp.fit(G_train, y)
-    y_pred, sigma2_pred = gp.predict(G_test, eval_MSE=True)
-
-    return y_pred
+    kernel = GPy.kern.Linear(input_dim=G_train.shape[1])
+    m = GPy.models.GPRegression(G_train, y[:,np.newaxis], kernel)
+    m.optimize(messages=True)
+    p = m.predict(G_test)
+    return -p[0].ravel()
 
 if __name__ == '__main__':
 
