@@ -3,6 +3,8 @@ import numpy as np
 from numpy import asarray
 from limix_tool.heritability import h2_observed_space_correct
 from limix_tool.kinship import gower_kinship_normalization
+import scipy as sp
+import scipy.stats
 import core
 
 def estimate(y, covariate, K, prevalence, ntrials=None, **kwargs):
@@ -14,18 +16,24 @@ def estimate(y, covariate, K, prevalence, ntrials=None, **kwargs):
 def _binomial_estimator(y, covariate, K, ntrials, prevalence, **kwargs):
 
     do_snoise = kwargs.get('estimate_sampling_noise', False)
+    ilink = kwargs.get('ilink', True)
 
     sign2 = 0
     if do_snoise:
         p = y / ntrials
         sign2 = np.mean(ntrials * p * (1 - p))
 
+
     y = y.copy() / ntrials
     covariate = covariate.copy()
-    y -= y.mean()
-    std = y.std()
-    if std > 0.:
-        y /= std
+
+    if ilink:
+        y = np.clip(sp.stats.norm.isf(1-y), -8.2, +8.2)
+    else:
+        y -= y.mean()
+        std = y.std()
+        if std > 0.:
+            y /= std
     K = gower_kinship_normalization(asarray(K, float))
 
     n = K.shape[0]
