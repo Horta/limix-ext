@@ -53,7 +53,7 @@ def _binomial_estimator(y, covariate, K, ntrials, prevalence, **kwargs):
     h2 = sigg2 / (sigg2 + sige2 + varc + sign2)
     h2 = np.asscalar(np.asarray(h2, float))
 
-    h2 = h2_observed_space_correct(h2, prevalence, prevalence)
+    # h2 = h2_observed_space_correct(h2, prevalence, prevalence)
 
     if not np.isfinite(h2):
         h2 = 0.
