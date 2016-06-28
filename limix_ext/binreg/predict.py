@@ -6,7 +6,6 @@ import rpy2.robjects.pandas2ri
 rpy2.robjects.pandas2ri.activate()
 import pandas
 from rpy2.robjects.packages import importr
-import pandas.rpy.common as com
 import scipy as sp
 
 def _create_r_env(y, ntrials, G):
