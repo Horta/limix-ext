@@ -20,15 +20,8 @@ def scan(y, ntrials, covariate, X, K):
     logger.info('macau scan started')
 
 
-    # (stats_, pvals_, _) = runscan(y, ntrials, K, X[:,0])
-    import ipdb; ipdb.set_trace()
-    run_scan(y, ntrials, K, X[:,0])
+    pvals_ = run_scan(y, ntrials, K, X[:,ok])
     logger.info('macau scan finished')
-    # pvals[ok] = np.asarray(pvals_, float).ravel()
-    # stats[ok] = np.asarray(stats_, float).ravel()
-    #
-    # nok = np.logical_not(np.isfinite(pvals))
-    # pvals[nok] = 1.
-    # stats[nok] = 0.
-    #
-    # return (stats, pvals)
+    pvals[ok] = np.asarray(pvals_, float).ravel()
+
+    return (stats, pvals)
