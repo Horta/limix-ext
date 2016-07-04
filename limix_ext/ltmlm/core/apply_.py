@@ -168,11 +168,14 @@ def _run_ltmlm(folder, threshold, chi2f, heritMax):
     cmd = join(cfolder, "LTMLM") + " -t "+threshold+"   -p "\
            +chi2f+"  -H "+heritMax
 
+    my_env = os.environ.copy()
+    my_env["LD_LIBRARY_PATH"] = cfolder
+
     logger = logging.getLogger(__name__)
     logger.debug("Shell command: %s", cmd)
     p = subprocess.Popen(cmd, stdin=subprocess.PIPE,
                          stdout=subprocess.PIPE,
-                         shell=True)
+                         shell=True, env=my_env)
     output, output_err = p.communicate()
     err_msg = ('Warning every extreme allele frequency may mess up' +
                ' estimates or normalized SNPs')
