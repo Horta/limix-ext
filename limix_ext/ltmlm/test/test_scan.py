@@ -1,7 +1,7 @@
 import numpy as np
 import unittest
 from limix_ext.ltmlm.scan import scan
-from limix_util.sys_ import platform
+from limix_util.sys import platform
 
 class TestScan(unittest.TestCase):
     def setUp(self):

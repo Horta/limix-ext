@@ -1,7 +1,7 @@
 import numpy as np
 import unittest
 from limix_ext.gcta.kinship import estimate
-from limix_util.sys_ import platform
+from limix_util.sys import platform
 
 class TestKinship(unittest.TestCase):
     def setUp(self):
