@@ -1,11 +1,16 @@
 from __future__ import division
 
+import pytest
+import sys
+
 import limix_ext as lxt
 
 from numpy import array, dot, empty, hstack, ones, pi, sqrt, zeros
 from numpy.random import RandomState
 from numpy.testing import assert_almost_equal
 
+@pytest.mark.skipif('linux' not in sys.platform,
+                    reason="requires Linux")
 def test_macau():
 
 
