@@ -1,9 +1,13 @@
 from __future__ import absolute_import
 from numpy import asarray
+
 import numpy as np
+
 import logging
+
 from .core import run_scan
-from limix_tool.kinship import gower_kinship_normalization
+
+from ..util import gower_normalization
 
 def scan(y, ntrials, covariate, X, K):
     logger = logging.getLogger(__name__)
