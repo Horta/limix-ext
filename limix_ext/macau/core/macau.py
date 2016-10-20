@@ -15,18 +15,21 @@ def _run_scan(y_fp, ntrials_fp, K_fp, predictor_fp):
 
     os.makedirs(os.path.join(outfolder, 'output', 'tmp'))
     logger = logging.getLogger(__name__)
-    logger.debug("Running shell list %s.", str(cmd))
+    msg = "Running shell list %s.", str(cmd)
+    logger.debug(msg)
+    print(msg)
     p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                          cwd=outfolder)
     out, err = p.communicate()
+    print(out)
+    print(err)
+    logger.debug(out)
+    if len(err) > 0:
+        logger.warn(err)
 
     assoc_file = os.path.join(outfolder, 'output', 'tmp',
                               os.path.basename(outfolder) + '.assoc.txt')
     df = pd.read_csv(assoc_file, sep='\t', index_col=0)
-
-    logger.debug(out)
-    if len(err) > 0:
-        logger.warn(err)
 
     return df
 
