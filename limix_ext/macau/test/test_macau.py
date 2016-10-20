@@ -33,4 +33,4 @@ def test_macau():
     M = ones((nsamples, 1))
 
     K = G.dot(G.T)
-    lxt.macau.scan(y, ntrials, M, G, G)
+    lxt.macau.scan(y, ntrials, M, G, K)
