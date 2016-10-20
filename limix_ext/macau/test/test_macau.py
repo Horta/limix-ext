@@ -32,4 +32,5 @@ def test_macau():
                                           size=ntrials[i]) > 0)
     M = ones((nsamples, 1))
 
+    K = G.dot(G.T)
     lxt.macau.scan(y, ntrials, M, G, G)
