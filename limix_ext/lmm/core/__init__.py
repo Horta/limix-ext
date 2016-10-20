@@ -1,1 +1,0 @@
-from fastlmm_ import train_associations
