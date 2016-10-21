@@ -22,7 +22,7 @@ def setup_package():
         version='1.0.0',
         maintainer="Danilo Horta",
         maintainer_email="horta@ebi.ac.uk",
-        license="BSD",
+        license="MIT",
         url='http://github.com/Horta/limix-ext',
         packages=find_packages(),
         zip_safe=False,
