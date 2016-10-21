@@ -17,12 +17,9 @@ def _run_scan(y_fp, ntrials_fp, K_fp, predictor_fp):
     logger = logging.getLogger(__name__)
     msg = "Running shell list %s.", str(cmd)
     logger.debug(msg)
-    print(msg)
     p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                          cwd=outfolder)
     out, err = p.communicate()
-    print(out)
-    print(err)
     logger.debug(out)
     if len(err) > 0:
         logger.warn(err)

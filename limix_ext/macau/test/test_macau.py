@@ -6,6 +6,7 @@ import sys
 import limix_ext as lxt
 
 from numpy import array, dot, empty, hstack, ones, pi, sqrt, zeros
+from numpy import asarray
 from numpy.random import RandomState
 from numpy.testing import assert_almost_equal
 
@@ -15,8 +16,8 @@ def test_macau():
 
 
     random = RandomState(139)
-    nsamples = 300
-    nfeatures = 1000
+    nsamples = 1000
+    nfeatures = 1500
 
     G = random.randn(nsamples, nfeatures) / sqrt(nfeatures)
 
@@ -33,4 +34,13 @@ def test_macau():
     M = ones((nsamples, 1))
 
     K = G.dot(G.T)
-    lxt.macau.scan(y, ntrials, M, G, K)
+    (stats, pvals) = lxt.macau.scan(y, ntrials, M, G[:,0:5], K)
+
+    pvals_expected = array([0.02004, 0.4066, 0.5314, 0.9621, 0.8318])
+    stats_expected = array([0, 0, 0, 0, 0])
+
+    pvals = asarray(pvals)
+    stats = asarray(stats)
+
+    assert_almost_equal(pvals/10, pvals_expected/10, decimal=1)
+    assert_almost_equal(stats/10, stats_expected/10, decimal=1)

@@ -8,7 +8,7 @@ from . import macau
 
 def test():
     import os
-    p = __import__('limix-ext').__path__[0]
+    p = __import__('limix_ext').__path__[0]
     src_path = os.path.abspath(p)
     old_path = os.getcwd()
     os.chdir(src_path)
