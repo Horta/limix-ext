@@ -24,7 +24,6 @@ before_install:
 install:
 - export PATH="$HOME/miniconda/bin:$PATH"
 - source activate travisci
-- travis_retry conda install pycparser -y --name travisci
 before_script:
 - export PATH="$HOME/miniconda/bin:$PATH"
 - source activate travisci
@@ -37,3 +36,17 @@ script:
 - pushd /
 - python -c "import limix_ext; limix_ext.test()"
 - popd
+branches:
+  only:
+  - master
+notifications:
+  email: false
+deploy:
+  provider: pypi
+  user: dhorta
+  password:
+    secure: NxDBa2aiQkceM7AAR5b/iVB/MFYl+TAAcBFEzCiCYOuMWkwU0aHwcAx4qYycjLyjwJiIJXp/8TKjETUeEKb+QDVAywEibuiWIAgaEdq3ffIUiLnE2aBv5tIDfKusX6rm3XEc3B24MAJG6jeFNEMk2yhasuZUDYUzzfGFnGKiKU7hZ1u1L9FYKhEzBNaE8jiFID0d5p4SJWijsgpRAdt67oL/fUwWdG7lWxjka6udhE4o0NazX+/1LnCLZXb9Kq/nqzHxVMI/RDVkzpwYqrXVm4pRvGaZ5lJaJ6PWkx2Dw1xF+o250jIuSLNdaM24YfLJpkGTqxdusZr3PIg68ArNur7JPgDl0Y01sQuB4fb6zXcETwff6zUfuRMgacnGovpci7yPO9YDskSC9c1qN0hj3yTj/60WM5TrvPWDHJ9SqJGVoxC6+2G9fs2oUs8qgPIR2UjurTfECf3f7oTTGVJNNU5jYU3sdMn/WM1irx6uEyuM3Z9HD2VspNURe9y5eV4Xk+dQXp4APcdajnTJJlOM3ZcYMEeDooZRmlkBVi76NONhfRpRUuA0b2Jo9fWeVZUlUBKoo10J5GfR9eUcEsC0drp3P8r01B9sOhqutIhjfaVVYKgQ3ClVpCMyWe7SP2qKw2vRPnap6Hf2cOrSZV1ctf6k6IAeuNz7rL+v6+7eHas=
+  on:
+    distributions: sdist bdist_wheel
+    repo: Horta/limix-ext
+    branch: macau

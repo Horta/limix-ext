@@ -18,8 +18,8 @@ def setup_package():
     tests_require = install_requires
 
     metadata = dict(
-        name='limix-ext',
-        version='1.0.0',
+        name='limix_ext',
+        version='1.0.1',
         maintainer="Danilo Horta",
         maintainer_email="horta@ebi.ac.uk",
         license="MIT",
@@ -30,6 +30,16 @@ def setup_package():
         setup_requires=setup_requires,
         tests_require=tests_require,
         include_package_data=True,
+        classifiers=[
+            "Development Status :: 5 - Production/Stable",
+            "Intended Audience :: Developers",
+            "License :: OSI Approved :: MIT License",
+            "Programming Language :: Python :: 2.7",
+            "Programming Language :: Python :: 3.4",
+            "Programming Language :: Python :: 3.5",
+            "Operating System :: OS Independent",
+            "Framework :: Pytest",
+        ],
     )
 
     try:
