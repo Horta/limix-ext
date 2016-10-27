@@ -1,8 +1,32 @@
+from __future__ import division, print_function
 import os
 import sys
-from setuptools import setup
-from setuptools import find_packages
+from setuptools import setup, find_packages
 
+
+PKG_NAME = 'limix_ext'
+VERSION  = '0.1.2'
+
+def get_test_suite():
+    from unittest import TestLoader
+    return TestLoader().discover(PKG_NAME)
+
+def write_version():
+    cnt = """
+# THIS FILE IS GENERATED FROM %(package_name)s SETUP.PY
+version = '%(version)s'
+"""
+    filename = os.path.join(PKG_NAME, 'version.py')
+    a = open(filename, 'w')
+    try:
+        a.write(cnt % {'version': VERSION,
+                       'package_name': PKG_NAME.upper()})
+    finally:
+        a.close()
+
+def get_version_filename(package_name):
+    filename = os.path.join(package_name, 'version.py')
+    return filename
 
 def setup_package():
     src_path = os.path.dirname(os.path.abspath(sys.argv[0]))
@@ -10,46 +34,24 @@ def setup_package():
     os.chdir(src_path)
     sys.path.insert(0, src_path)
 
-    needs_pytest = {'pytest', 'test', 'ptr'}.intersection(sys.argv)
-    pytest_runner = ['pytest-runner'] if needs_pytest else []
+    write_version()
 
-    setup_requires = [] + pytest_runner
-    install_requires = ['pytest', 'scipy>=0.17', 'numpy>=1.9']
-    tests_require = install_requires
+    install_requires = ['limix_util', 'limix_tool', 'fastlmm']
+    setup_requires = []
 
     metadata = dict(
-        name='limix_ext',
-        version='1.0.1',
-        maintainer="Danilo Horta",
+        name=PKG_NAME,
+        maintainer = "Limix Developers",
+        version=VERSION,
         maintainer_email="horta@ebi.ac.uk",
-        license="MIT",
-        url='http://github.com/Horta/limix-ext',
+        test_suite='setup.get_test_suite',
         packages=find_packages(),
-        zip_safe=False,
+        license="BSD",
+        url='http://pmbio.github.io/limix/',
         install_requires=install_requires,
         setup_requires=setup_requires,
-        tests_require=tests_require,
-        include_package_data=True,
-        classifiers=[
-            "Development Status :: 5 - Production/Stable",
-            "Intended Audience :: Developers",
-            "License :: OSI Approved :: MIT License",
-            "Programming Language :: Python :: 2.7",
-            "Programming Language :: Python :: 3.4",
-            "Programming Language :: Python :: 3.5",
-            "Operating System :: OS Independent",
-            "Framework :: Pytest",
-        ],
+        zip_safe=False
     )
-
-    try:
-        from distutils.command.bdist_conda import CondaDistribution
-    except ImportError:
-        pass
-    else:
-        metadata['distclass'] = CondaDistribution
-        metadata['conda_buildnum'] = 1
-        metadata['conda_features'] = ['mkl']
 
     try:
         setup(**metadata)
