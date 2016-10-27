@@ -1,8 +1,8 @@
 from __future__ import division
 import numpy as np
 from numpy import asarray
-from limix_tool.heritability import h2_observed_space_correct
-from limix_tool.kinship import gower_kinship_normalization
+# from limix_tool.heritability import h2_observed_space_correct
+from ..util import gower_normalization
 import scipy as sp
 import scipy.stats
 from . import core
@@ -13,28 +13,16 @@ def estimate(y, covariate, K, prevalence, ntrials=None, **kwargs):
         return _bernoulli_estimator(y, covariate, K, prevalence, **kwargs)
     return _binomial_estimator(y, covariate, K, ntrials, prevalence, **kwargs)
 
-def _binomial_estimator(y, covariate, K, ntrials, prevalence, **kwargs):
-
-    do_snoise = kwargs.get('estimate_sampling_noise', False)
-    ilink = kwargs.get('ilink', True)
-
-    sign2 = 0
-    if do_snoise:
-        p = y / ntrials
-        sign2 = np.mean(ntrials * p * (1 - p))
-
+def binomial_estimate(y, ntrials, covariate, K):
+    ntrials = np.asarray(ntrials, float)
+    y = np.asarray(y, float)
 
     y = y.copy() / ntrials
+    y -= y.mean()
+    y /= y.std()
     covariate = covariate.copy()
 
-    if ilink:
-        y = np.clip(sp.stats.norm.isf(1-y), -8.2, +8.2)
-    else:
-        y -= y.mean()
-        std = y.std()
-        if std > 0.:
-            y /= std
-    K = gower_kinship_normalization(asarray(K, float))
+    K = np.asarray(K, float)
 
     n = K.shape[0]
     G = np.random.randint(0, 3, size=(n, 1))
@@ -50,10 +38,8 @@ def _binomial_estimator(y, covariate, K, ntrials, prevalence, **kwargs):
 
     delta = np.exp(ldelta)
     sige2 = delta * sigg2
-    h2 = sigg2 / (sigg2 + sige2 + varc + sign2)
+    h2 = sigg2 / (sigg2 + sige2 + varc)
     h2 = np.asscalar(np.asarray(h2, float))
-
-    # h2 = h2_observed_space_correct(h2, prevalence, prevalence)
 
     if not np.isfinite(h2):
         h2 = 0.
