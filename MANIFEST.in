@@ -3,3 +3,8 @@ include limix_ext/ltmlm/core/convertGctaGrmToCov.R
 include limix_ext/ltmlm/core/LTMLM
 include limix_ext/ltmlm/core/liblapack.so.3gf
 include limix_ext/gcta/core/gcta64
+include limix_ext/macau/macau
+include LICENSE
+include README.md
+include setup.cfg
+recursive-include limix_ext *.py
