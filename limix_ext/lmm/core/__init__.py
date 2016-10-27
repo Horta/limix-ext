@@ -1,1 +1,1 @@
-from fastlmm_ import train_associations
+from ._fastlmm import train_associations

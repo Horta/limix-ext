@@ -125,8 +125,6 @@ def train_associations(X,Y,K,C=None,addBiasTerm=False,numintervalsAlt=0,ldeltami
         logger.info('Delta optimization')
         ldelta0[phen]=optdelta(UY_,Ucovariate,S,ldeltanull=None,numintervals=numintervals0,ldeltamin=ldeltamin0,ldeltamax=ldeltamax0);
         logger.debug('log(delta) was fitted to %e.', ldelta0)
-        #print ldelta0
-        #print "ldelta0 \n"
         logger.info('nLL evaluation')
         nLL0_, beta0_, sigg20_=nLLeval(ldelta0[phen],UY_,Ucovariate,S,MLparams=True);
         beta0[phen,:]=beta0_;
@@ -198,7 +196,6 @@ def train_interact(X,Y,K,interactants=None,covariates=None,addBiasTerm=True,numi
         #stack: interactions, interactants (main) SNPs (main) covariates (if any)
         UX_  = SP.hstack((UXi_,Ucovariates_))
         for phen in SP.arange(n_pheno):
-            print phen
             #loop through phenoptypes
             #get transformed Y
             UY_=UY[:,phen]

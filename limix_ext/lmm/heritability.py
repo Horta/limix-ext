@@ -5,7 +5,7 @@ from limix_tool.heritability import h2_observed_space_correct
 from limix_tool.kinship import gower_kinship_normalization
 import scipy as sp
 import scipy.stats
-import core
+from . import core
 
 def estimate(y, covariate, K, prevalence, ntrials=None, **kwargs):
     y = asarray(y, float).copy()
