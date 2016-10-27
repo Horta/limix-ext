@@ -1,1 +1,4 @@
-from scan import scan
+from __future__ import absolute_import
+
+from ._scan import scan
+from ._heritability import heritability
