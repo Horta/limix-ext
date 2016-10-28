@@ -1,5 +1,6 @@
 import numpy as np
 
+
 def predict(y, covariate_train, G_train, covariate_test, G_test):
     from sklearn.linear_model import LogisticRegression
 

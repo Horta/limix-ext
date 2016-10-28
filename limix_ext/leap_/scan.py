@@ -1,9 +1,14 @@
 from __future__ import absolute_import
-from numpy import asarray
-import numpy as np
+
 import logging
-from .core import leap_scan
+
+import numpy as np
+from numpy import asarray
+
 from limix_tool.kinship import gower_kinship_normalization
+
+from .core import leap_scan
+
 
 def scan(y, covariate, X, K, K_nsnps, prevalence):
     logger = logging.getLogger(__name__)

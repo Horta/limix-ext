@@ -1,3 +1,2 @@
-from .scan import scan
+from . import qtl
 from . import heritability
-# from .predict import predict

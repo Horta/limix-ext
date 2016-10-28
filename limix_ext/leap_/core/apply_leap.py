@@ -1,11 +1,15 @@
 from __future__ import print_function
+
 import logging
+
 import numpy as np
-from leap_gwas import gwas
-from calc_h2 import calc_h2
+
 import fastlmm.util.VertexCut as vc
-from probit import probit
+from calc_h2 import calc_h2
 from eigd import eigenDecompose
+from leap_gwas import gwas
+from probit import probit
+
 
 def apply_this_kinship(G, K, y, prevalence, nsnps_back, cutoff,
                        covariates=None):

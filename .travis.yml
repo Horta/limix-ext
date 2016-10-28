@@ -1,49 +1,53 @@
 language: python
-sudo: false
-
-cache:
-  - pip
-  - apt
-
-addons:
-  apt:
-    packages:
-      - build-essential
-      - python-dev
-      - libc6
-      - g++
-      - gfortran
-      - libgsl0ldbl
-      - zip
-
-python:
-  - 2.7
-
+matrix:
+  include:
+  - os: linux
+    sudo: false
+    dist: trusty
+    python: '2.7'
+  - os: linux
+    sudo: false
+    dist: trusty
+    python: '3.4'
+  - os: linux
+    sudo: false
+    dist: trusty
+    python: '3.5'
+  - os: osx
+    language: generic
+    env: TRAVIS_PYTHON_VERSION=3.5
 before_install:
-  - if [[ "$TRAVIS_PYTHON_VERSION" == "2.7" ]]; then
-      wget https://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh -O miniconda.sh;
-    else
-      wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
-    fi
-  - bash miniconda.sh -b -p $HOME/miniconda
-  - export PATH="$HOME/miniconda/bin:$PATH"
-  - hash -r
-  - conda config --set always_yes yes --set changeps1 no
-  - conda update -q conda
-  - conda info -a
-  - conda install -q conda-build
-  - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION setuptools cython numpy scipy numba
-  - conda install -q -n test-environment -c r rpy2
-  - source activate test-environment
-
-install: python setup.py install
-
+- wget https://raw.githubusercontent.com/Horta/travis-miniconda/master/install.sh
+  -O install.sh
+- chmod +x install.sh
+- travis_retry bash -x ./install.sh
+install:
+- export PATH="$HOME/miniconda/bin:$PATH"
+- source activate travisci
 before_script:
-    - pushd $HOME
-    - wget http://pngu.mgh.harvard.edu/~purcell/plink/dist/plink-1.07-x86_64.zip
-    - unzip plink-1.07-x86_64.zip
-    - export PATH="$HOME/plink-1.07-x86_64:$PATH"
-    - hash -r
-    - popd
-
-script: python setup.py test
+- export PATH="$HOME/miniconda/bin:$PATH"
+- source activate travisci
+- pwd
+- find .
+- python setup.py test
+script:
+- export PATH="$HOME/miniconda/bin:$PATH"
+- source activate travisci
+- python setup.py sdist
+- pip install dist/`ls dist | grep -i -E '\.(gz)$' | head -1`
+- pushd /
+- python -c "import limix_ext; limix_ext.test()"
+- popd
+notifications:
+  email: false
+branches:
+  only:
+  - master
+deploy:
+  provider: pypi
+  user: dhorta
+  password:
+    secure: t9g1+6zSEXTFbTqrs7Y4EX49NTvgwdrlhcjOe52H8+N12YXXRDZJYilpxO29yCxjHGco/2Gnjm+4OkPu+RVw9c0ZqYxlevKsghC1JiA+A51JzJIVACY1UlPUqYguG+IzbR/4moA8jM6eHnuEnTDCmrjj4gkQgWvXRnNqk8YDnBiVneId3BYyOAVK3UR0bxK+3OaXIPOJJ3gbALUk1dcX36Lbkjaqfq4ffiVrjrDgGRMa0S+r2+jkpEFyiSVeEBoH1DkD3MDivGvcWnm1xCLlb5QzZxdVaynZ2cbg+bbxFlW6skLcaJ7G6x8yj1gDBfofuagqIgHD2v2Ka64Bcju5dEWqHbD3yq7ViBgEpbyrDlDRmpn06OErGcwswi1SQ1Bnj1B9lqRcn7vh9N+bzfsYPtCcGbxce+AhAk6DG5kHN9W19GgHikstuB79XRhxGYUvz9SQlzSTc0Aox7cHsJBqWJb/yzPwHjBKo63SYmrYat6KiUY1voDevoz4noRu2NjSin7bglNjqCBRHT86qKnnUf0ySOL+BY5+wdN01qcIS4x77GwMej7dlY2lWktz1QUJMaIRnL1wJJY/CI8pnDk9WEnzxtdI4OI9IZaVsPhf1ESL3u67/Csmn9mlajLJHq5HpgJbiKfKMQ8R4tHD51pFZCu8n6b2heR8o19l+LTSJlA=
+  on:
+    distributions: sdist bdist_wheel
+    repo: Horta/limix-ext

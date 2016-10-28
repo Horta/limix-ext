@@ -1,16 +1,15 @@
 from __future__ import absolute_import
 
-from numpy import asarray
-
-import numpy as np
-
 import logging
 
-from .core import run_scan
+import numpy as np
+from numpy import asarray
 
 from ..util import gower_normalization
+from ._core import run_scan
 
-def heritability(y, ntrials, covariate, K):
+
+def binomial_estimate(y, ntrials, covariate, K):
     logger = logging.getLogger(__name__)
     logger.info('Gower normalizing')
     K = gower_normalization(asarray(K, float))

@@ -1,9 +1,10 @@
-import scipy as SP
+import logging
+
 import numpy as NP
+import scipy as SP
 import scipy.linalg as LA
 import scipy.optimize as OPT
 import scipy.stats as st
-import logging
 
 # log of 2pi
 L2pi = 1.8378770664093453

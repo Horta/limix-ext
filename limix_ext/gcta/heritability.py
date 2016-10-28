@@ -1,6 +1,8 @@
-from numpy import asarray
 import numpy as np
+from numpy import asarray
+
 from core import estimate_h2
+
 
 def estimate(G, y, prevalence):
     y = asarray(y, float).copy()

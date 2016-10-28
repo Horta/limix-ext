@@ -1,7 +1,9 @@
-import scipy.linalg as la
-import time
 import logging
+import time
+
 import numpy as np
+import scipy.linalg as la
+
 
 def eigenDecompose(XXT):
     logger = logging.getLogger(__name__)

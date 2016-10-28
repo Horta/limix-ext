@@ -1,6 +1,8 @@
 import numpy as np
 from numpy.testing import assert_allclose
+
 from limix_ext.lmm.heritability import binomial_estimate
+
 
 # def test_bernoulli():
 #     random = np.random.RandomState(981)

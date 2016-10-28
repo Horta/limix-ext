@@ -1,11 +1,13 @@
 from __future__ import division
+
 import numpy as np
-from numpy import asarray
-# from limix_tool.heritability import h2_observed_space_correct
-from ..util import gower_normalization
 import scipy as sp
 import scipy.stats
-from . import core
+from numpy import asarray
+
+from ._core import train_associations
+from ..util import gower_normalization
+
 
 def estimate(y, covariate, K, prevalence, ntrials=None, **kwargs):
     y = asarray(y, float).copy()
@@ -30,7 +32,7 @@ def binomial_estimate(y, ntrials, covariate, K):
     G = np.asarray(G, float)
     y_ = y[:, np.newaxis]
 
-    (_, _, ldelta, sigg2, beta0) = core.train_associations(G, y_,
+    (_, _, ldelta, sigg2, beta0) = train_associations(G, y_,
                                                   K, C=covariate,
                                                   addBiasTerm=False)
 
@@ -62,7 +64,7 @@ def _bernoulli_estimator(y, covariate, K, prevalence, **kwargs):
     G = np.asarray(G, float)
     y_ = y[:, np.newaxis]
 
-    (_, _, ldelta, sigg2, beta0) = core.train_associations(G, y_,
+    (_, _, ldelta, sigg2, beta0) = train_associations(G, y_,
                                                   K, C=covariate,
                                                   addBiasTerm=False)
 

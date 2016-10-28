@@ -1,8 +1,10 @@
 import logging
-import numpy as np
-import scipy.stats as stats
 import time
+
+import numpy as np
 import scipy.optimize as opt
+import scipy.stats as stats
+
 
 def _create_iid(nsamples):
     return [(str(i), str(i)) for i in xrange(nsamples)]

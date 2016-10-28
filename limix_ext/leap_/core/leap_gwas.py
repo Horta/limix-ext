@@ -1,6 +1,8 @@
 import numpy as np
 import scipy as sp
+
 from fastlmm.inference.lmm_cov import LMM as fastLMM
+
 
 def gwas(K, G, liabs, h2, covariate=None):
 

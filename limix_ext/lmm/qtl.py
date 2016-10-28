@@ -1,11 +1,16 @@
 from __future__ import absolute_import
-from numpy import asarray
-import numpy as np
-from .core import train_associations
-from limix_tool.kinship import gower_kinship_normalization
+
 import logging
 
-def scan(y, covariate, X, K, ntrials=None):
+import numpy as np
+from numpy import asarray
+
+from limix_tool.kinship import gower_kinship_normalization
+
+from ._core import train_associations
+
+
+def normal_scan(y, covariate, X, K, ntrials=None):
     logger = logging.getLogger(__name__)
     logger.info('Gower normalizing')
     K = gower_kinship_normalization(asarray(K, float))

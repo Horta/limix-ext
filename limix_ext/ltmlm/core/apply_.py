@@ -1,14 +1,14 @@
-import numpy as np
-import re
-from os.path import join
-from subprocess import call
-from limix_util.path import temp_folder
-from limix_util.sys import platform
 import logging
 import os
+import re
 import subprocess
-from subprocess import check_output
-from subprocess import CalledProcessError
+from os.path import join
+from subprocess import CalledProcessError, call, check_output
+
+import numpy as np
+
+from limix_util.path import temp_folder
+from limix_util.sys import platform
 
 _letras = np.array([['A', 'C'],
  ['A', 'G'],

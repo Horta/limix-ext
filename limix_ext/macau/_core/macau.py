@@ -1,10 +1,12 @@
-import os
 import logging
-import numpy as np
+import os
 import subprocess
-from pandas import DataFrame
 import tempfile
+
+import numpy as np
 import pandas as pd
+from pandas import DataFrame
+
 
 def _run_scan(y_fp, ntrials_fp, K_fp, predictor_fp):
     outfolder = tempfile.mkdtemp()

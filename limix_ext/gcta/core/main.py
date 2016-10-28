@@ -1,14 +1,16 @@
-import os
 import logging
-import numpy as np
-import subprocess
+import os
 import shutil
-from result import Result
+import subprocess
 import tempfile
-from limix_tool import plink_
-from limix_util.sys import platform
+
+import numpy as np
+
 from limix_math import isint_alike
+from limix_tool import plink_
 from limix_util.path import temp_folder
+from limix_util.sys import platform
+from result import Result
 
 
 def _create_their_kinship(bed_folder, prefix):

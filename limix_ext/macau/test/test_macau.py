@@ -1,14 +1,14 @@
 from __future__ import division
 
-import pytest
 import sys
+
+import pytest
+from numpy import array, asarray, dot, empty, hstack, ones, pi, sqrt, zeros
+from numpy.random import RandomState
+from numpy.testing import assert_almost_equal
 
 import limix_ext as lxt
 
-from numpy import array, dot, empty, hstack, ones, pi, sqrt, zeros
-from numpy import asarray
-from numpy.random import RandomState
-from numpy.testing import assert_almost_equal
 
 @pytest.mark.skipif('linux' not in sys.platform,
                     reason="requires Linux")
@@ -34,7 +34,7 @@ def test_macau():
     M = ones((nsamples, 1))
 
     K = G.dot(G.T)
-    (stats, pvals) = lxt.macau.scan(y, ntrials, M, G[:,0:5], K)
+    (stats, pvals) = lxt.macau.qtl.binomial_scan(y, ntrials, M, G[:,0:5], K)
 
     pvals_expected = array([0.02004, 0.4066, 0.5314, 0.9621, 0.8318])
     stats_expected = array([0, 0, 0, 0, 0])

@@ -1,5 +1,7 @@
-import numpy as np
 import re
+
+import numpy as np
+
 
 class Result(object):
     def __init__(self, filename):

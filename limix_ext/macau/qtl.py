@@ -1,14 +1,13 @@
 from __future__ import absolute_import
 
-from numpy import asarray
-
-import numpy as np
-
 import logging
 
-from .core import run_scan
+import numpy as np
+from numpy import asarray
 
 from ..util import gower_normalization
+from ._core import run_scan
+
 
 def scan(y, ntrials, covariate, X, K):
     logger = logging.getLogger(__name__)
