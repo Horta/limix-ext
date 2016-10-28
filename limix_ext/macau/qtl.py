@@ -9,7 +9,7 @@ from ..util import gower_normalization
 from ._core import run_scan
 
 
-def scan(y, ntrials, covariate, X, K):
+def binomial_scan(y, ntrials, covariate, X, K):
     logger = logging.getLogger(__name__)
     logger.info('Gower normalizing')
     K = gower_normalization(asarray(K, float))
