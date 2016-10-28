@@ -1,7 +1,7 @@
-from sklearn.linear_model import LogisticRegression
 import numpy as np
 
 def predict(y, covariate_train, G_train, covariate_test, G_test):
+    from sklearn.linear_model import LogisticRegression
 
     G_train = np.hstack([covariate_train, G_train])
     G_test = np.hstack([covariate_test, G_test])

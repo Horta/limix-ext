@@ -23,6 +23,7 @@ def binomial_estimate(y, ntrials, covariate, K):
     covariate = covariate.copy()
 
     K = np.asarray(K, float)
+    K = gower_normalization(asarray(K, float))
 
     n = K.shape[0]
     G = np.random.randint(0, 3, size=(n, 1))

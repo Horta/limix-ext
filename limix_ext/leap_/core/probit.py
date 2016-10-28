@@ -2,7 +2,6 @@ import logging
 import numpy as np
 import scipy.stats as stats
 import time
-import sklearn.linear_model
 import scipy.optimize as opt
 
 def _create_iid(nsamples):
@@ -121,6 +120,7 @@ def probitRegression(X, y, thresholds, numSNPs, numFixedFeatures, h2, useHess, m
 
     logger = logging.getLogger(__name__)
 
+    import sklearn.linear_model
     regParam = h2 /  float(numSNPs)
     Linreg = sklearn.linear_model.Ridge(alpha=1.0/(2*regParam), fit_intercept=False, normalize=False, solver='lsqr')
     Linreg.fit(X, y)

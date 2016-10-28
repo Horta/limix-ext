@@ -1,13 +1,13 @@
 import logging
 import numpy as np
 import scipy.stats as stats
-import sklearn.linear_model
 from eigd import eigenDecompose
 
 def calcLiabThreholds(U, S, keepArr, phe, numRemovePCs, prev):
 
     #Run logistic regression
     G = U[:, -numRemovePCs:] * np.sqrt(S[-numRemovePCs:])
+    import sklearn.linear_model
     Logreg = sklearn.linear_model.LogisticRegression(penalty='l2', C=500000, fit_intercept=True)
     Logreg.fit(G[keepArr, :numRemovePCs], phe[keepArr])
 
