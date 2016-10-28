@@ -24,15 +24,18 @@ before_install:
 install:
 - export PATH="$HOME/miniconda/bin:$PATH"
 - source activate travisci
+- conda install rpy2 -y -q
 before_script:
 - export PATH="$HOME/miniconda/bin:$PATH"
 - source activate travisci
+- conda install rpy2 -y -q
 - pwd
 - find .
 - python setup.py test
 script:
 - export PATH="$HOME/miniconda/bin:$PATH"
 - source activate travisci
+- conda install rpy2 -y -q
 - python setup.py sdist
 - pip install dist/`ls dist | grep -i -E '\.(gz)$' | head -1`
 - pushd /
