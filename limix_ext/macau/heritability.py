@@ -9,14 +9,14 @@ from ..util import gower_normalization
 from ._core import run_scan
 
 
-def binomial_estimate(y, ntrials, covariate, K):
+def binomial_estimate(nsuccesses, ntrials, covariate, K):
     logger = logging.getLogger(__name__)
     logger.info('Gower normalizing')
     K = gower_normalization(asarray(K, float))
 
     random = np.random.RandomState(3984)
-    X = random.randn(len(y), 1)
-    y = asarray(y, float).copy()
+    X = random.randn(len(nsuccesses), 1)
+    nsuccesses = asarray(nsuccesses, float).copy()
     covariate = asarray(covariate, float).copy()
     ntrials = asarray(ntrials, float).copy()
 
@@ -26,7 +26,7 @@ def binomial_estimate(y, ntrials, covariate, K):
     stats = np.zeros(X.shape[1])
     logger.info('macau heritability started')
 
-    pvals_ = run_scan(y, ntrials, K, X[:,ok])
+    pvals_ = run_scan(nsuccesses, ntrials, K, X[:,ok])
     logger.info('macau heritability finished')
     pvals[ok] = np.asarray(pvals_, float).ravel()
 

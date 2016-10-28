@@ -9,12 +9,12 @@ from ..util import gower_normalization
 from ._core import run_scan
 
 
-def binomial_scan(y, ntrials, covariate, X, K):
+def binomial_scan(nsuccesses, ntrials, covariate, X, K):
     logger = logging.getLogger(__name__)
     logger.info('Gower normalizing')
     K = gower_normalization(asarray(K, float))
     X = asarray(X, float).copy()
-    y = asarray(y, float).copy()
+    nsuccesses = asarray(nsuccesses, float).copy()
     covariate = asarray(covariate, float).copy()
     ntrials = asarray(ntrials, float).copy()
 
@@ -24,7 +24,8 @@ def binomial_scan(y, ntrials, covariate, X, K):
     logger.info('macau scan started')
 
 
-    pvals_ = run_scan(y, ntrials, K, X[:,ok])
+    pvals_ = run_scan(nsuccesses, ntrials, K, X[:,ok])
+
     logger.info('macau scan finished')
     pvals[ok] = np.asarray(pvals_, float).ravel()
 
