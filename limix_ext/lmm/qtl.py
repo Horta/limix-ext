@@ -45,6 +45,38 @@ def normal_scan(y, covariate, X, K, ntrials=None):
 
     return (stats, pvals)
 
+def bernoulli_scan(outcome, X, K, covariates):
+    logger = logging.getLogger(__name__)
+    logger.info('Gower normalizing')
+
+    outcome = clone(outcome)
+    X = clone(X)
+    K = clone(K)
+    covariates = clone(covariates)
+
+    gower_normalization(K, out=K)
+
+    outcome -= outcome.mean()
+    std = outcome.std()
+    if std > 0.:
+        outcome /= std
+
+    outcome = outcome[:, newaxis]
+
+    logger.info('train_association started')
+    (stats, pvals, _, _, _) = train_associations(X, outcome, K, C=covariates,
+                                                 addBiasTerm=False)
+    logger.info('train_association finished')
+    pvals = ascontiguousarray(pvals, float).ravel()
+    nok = logical_not(isfinite(pvals))
+    pvals[nok] = 1.
+
+    stats = ascontiguousarray(stats, float).ravel()
+    stats[nok] = 0.
+
+    return pvals
+
+
 def binomial_scan(nsuccesses, ntrials, X, K, covariates):
     logger = logging.getLogger(__name__)
     logger.info('Gower normalizing')
