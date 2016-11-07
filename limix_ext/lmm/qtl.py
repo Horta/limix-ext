@@ -78,3 +78,35 @@ def binomial_scan(nsuccesses, ntrials, X, K, covariates):
     stats[nok] = 0.
 
     return pvals
+
+def poisson_scan(noccurrences, X, K, covariates):
+    logger = logging.getLogger(__name__)
+    logger.info('Gower normalizing')
+
+    noccurrences = clone(noccurrences)
+    X = clone(X)
+    K = clone(K)
+    covariates = clone(covariates)
+
+    gower_normalization(K, out=K)
+
+    noccurrences -= noccurrences.mean()
+    std = noccurrences.std()
+    if std > 0.:
+        noccurrences /= std
+
+    noccurrences = noccurrences[:, newaxis]
+
+    logger.info('train_association started')
+    (stats, pvals, _, _, _) = train_associations(X, noccurrences, K,
+                                                 C=covariates,
+                                                 addBiasTerm=False)
+    logger.info('train_association finished')
+    pvals = ascontiguousarray(pvals, float).ravel()
+    nok = logical_not(isfinite(pvals))
+    pvals[nok] = 1.
+
+    stats = ascontiguousarray(stats, float).ravel()
+    stats[nok] = 0.
+
+    return pvals
