@@ -35,12 +35,9 @@ def normal_scan(y, covariates, X, K):
     (stats, pvals, _, _, _) = train_associations(X, y, K, C=covariates,
                                              addBiasTerm=False)
     logger.info('train_association finished')
-    pvals = np.asarray(pvals, float).ravel()
-    nok = np.logical_not(np.isfinite(pvals))
+    pvals = ascontiguousarray(pvals, float).ravel()
+    nok = logical_not(isfinite(pvals))
     pvals[nok] = 1.
-
-    stats = np.asarray(stats, float).ravel()
-    stats[nok] = 0.
 
     return pvals
 
