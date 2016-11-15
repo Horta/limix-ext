@@ -13,7 +13,7 @@ from ..util import clone
 from ._core import train_associations
 
 
-def normal_scan(y, covariate, X, K):
+def normal_scan(y, covariates, X, K):
     logger = logging.getLogger(__name__)
     logger.info('Gower normalizing')
 
@@ -32,7 +32,7 @@ def normal_scan(y, covariate, X, K):
     y = y[:, newaxis]
 
     logger.info('train_association started')
-    (stats, pvals, _, _, _) = train_associations(X, y, K, C=covariate,
+    (stats, pvals, _, _, _) = train_associations(X, y, K, C=covariates,
                                              addBiasTerm=False)
     logger.info('train_association finished')
     pvals = np.asarray(pvals, float).ravel()
