@@ -13,7 +13,7 @@ from ..util import clone
 from ._core import train_associations
 
 
-def normal_scan(y, covariate, X, K, ntrials=None):
+def normal_scan(y, covariate, X, K):
     logger = logging.getLogger(__name__)
     logger.info('Gower normalizing')
 
