@@ -16,13 +16,13 @@ from ._core import train_associations
 def normal_scan(y, covariate, X, K, ntrials=None):
     logger = logging.getLogger(__name__)
     logger.info('Gower normalizing')
-    K = gower_normalization(asarray(K, float))
-    X = asarray(X, float).copy()
-    y = asarray(y, float).copy()
-    covariate = asarray(covariate, float).copy()
 
-    if ntrials is not None:
-        y /= ntrials
+    y = clone(y)
+    X = clone(X)
+    K = clone(K)
+    covariates = clone(covariates)
+
+    gower_normalization(K, out=K)
 
     y -= y.mean()
     std = y.std()
@@ -30,7 +30,6 @@ def normal_scan(y, covariate, X, K, ntrials=None):
         y /= std
 
     y = y[:, newaxis]
-
 
     logger.info('train_association started')
     (stats, pvals, _, _, _) = train_associations(X, y, K, C=covariate,
@@ -43,7 +42,7 @@ def normal_scan(y, covariate, X, K, ntrials=None):
     stats = np.asarray(stats, float).ravel()
     stats[nok] = 0.
 
-    return (stats, pvals)
+    return pvals
 
 def bernoulli_scan(outcome, X, K, covariates):
     logger = logging.getLogger(__name__)
