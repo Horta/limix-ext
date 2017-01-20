@@ -6,6 +6,7 @@ from numpy import ascontiguousarray
 from numpy import logical_not
 from numpy import isfinite
 from numpy import newaxis
+from numpy import argsort
 
 from ..util import gower_normalization
 from ..util import clone
@@ -73,7 +74,7 @@ def bernoulli_scan(outcome, X, K, covariates):
     return pvals
 
 
-def binomial_scan(nsuccesses, ntrials, X, K, covariates):
+def binomial_scan(nsuccesses, ntrials, X, K, covariates, rank_normalize=False):
     logger = logging.getLogger(__name__)
     logger.info('Gower normalizing')
 
@@ -91,6 +92,13 @@ def binomial_scan(nsuccesses, ntrials, X, K, covariates):
     std = nsuccesses.std()
     if std > 0.:
         nsuccesses /= std
+
+    if rank_normalize:
+        nsuccesses = ascontiguousarray(argsort(nsuccesses), float)
+        nsuccesses -= nsuccesses.mean()
+        std = nsuccesses.std()
+        if std > 0.:
+            nsuccesses /= std
 
     nsuccesses = nsuccesses[:, newaxis]
 
