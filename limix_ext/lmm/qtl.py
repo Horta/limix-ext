@@ -76,6 +76,8 @@ def bernoulli_scan(outcome, X, K, covariates):
 
 def binomial_scan(nsuccesses, ntrials, X, K, covariates, rank_normalize=False):
     logger = logging.getLogger(__name__)
+
+    from lim.util.preprocessing import quantile_gaussianize
     logger.info('Gower normalizing')
 
     nsuccesses = clone(nsuccesses)
@@ -94,11 +96,7 @@ def binomial_scan(nsuccesses, ntrials, X, K, covariates, rank_normalize=False):
         nsuccesses /= std
 
     if rank_normalize:
-        nsuccesses = ascontiguousarray(argsort(nsuccesses), float)
-        nsuccesses -= nsuccesses.mean()
-        std = nsuccesses.std()
-        if std > 0.:
-            nsuccesses /= std
+        nsuccesses = quantile_gaussianize(nsuccesses)
 
     nsuccesses = nsuccesses[:, newaxis]
 
