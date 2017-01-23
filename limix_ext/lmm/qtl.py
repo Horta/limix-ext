@@ -77,7 +77,7 @@ def bernoulli_scan(outcome, X, K, covariates):
 def binomial_scan(nsuccesses, ntrials, X, K, covariates, rank_normalize=False):
     logger = logging.getLogger(__name__)
 
-    from lim.util.preprocessing import quantile_gaussianize
+    from lim.util.preprocess import quantile_gaussianize
     logger.info('Gower normalizing')
 
     nsuccesses = clone(nsuccesses)
