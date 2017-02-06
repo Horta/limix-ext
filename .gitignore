@@ -2,3 +2,5 @@ limix_ext.egg-info/
 limix_ext/version.py
 save-commands.json
 .eggs/
+build/
+dist/

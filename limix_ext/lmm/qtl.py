@@ -7,6 +7,9 @@ from numpy import logical_not
 from numpy import isfinite
 from numpy import newaxis
 from numpy import argsort
+from numpy import clip
+
+from scipy.stats import norm
 
 from ..util import gower_normalization
 from ..util import clone
@@ -88,20 +91,16 @@ def binomial_scan(nsuccesses, ntrials, X, K, covariates, rank_normalize=False):
 
     gower_normalization(K, out=K)
 
-    nsuccesses /= ntrials
-
-    nsuccesses -= nsuccesses.mean()
-    std = nsuccesses.std()
-    if std > 0.:
-        nsuccesses /= std
-
+    
     if rank_normalize:
-        nsuccesses = quantile_gaussianize(nsuccesses)
+        phenotype = quantile_gaussianize(nsuccesses)
+    else:
+        phenotype = 1 - norm.isf(clip(1 - nsuccesses / ntrials, 1e-10, 1-1e-10))
 
-    nsuccesses = nsuccesses[:, newaxis]
+    phenotype = phenotype[:, newaxis]
 
     logger.info('train_association started')
-    (stats, pvals, _, _, _) = train_associations(X, nsuccesses, K, C=covariates,
+    (stats, pvals, _, _, _) = train_associations(X, phenotype, K, C=covariates,
                                                  addBiasTerm=False)
     logger.info('train_association finished')
     pvals = ascontiguousarray(pvals, float).ravel()
