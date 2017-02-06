@@ -8,13 +8,18 @@ from numpy import asarray
 from ._core import train_associations
 from ..util import gower_normalization
 
-def binomial_estimate(y, ntrials, covariate, K):
+def binomial_estimate(nsuccesses, ntrials, covariate, K):
     ntrials = np.asarray(ntrials, float)
-    y = np.asarray(y, float)
+    nsuccesses = np.asarray(nsuccesses, float).copy()
+    ntrials = np.asarray(ntrials, float).copy()
 
-    y = y.copy() / ntrials
-    y -= y.mean()
-    y /= y.std()
+    if rank_normalize:
+        phenotype = quantile_gaussianize(nsuccesses / ntrials)
+    else:
+        phenotype = 1 - norm.isf(clip(1 - nsuccesses / ntrials, 1e-10, 1-1e-10))
+
+    phenotype = phenotype[:, newaxis]
+
     covariate = covariate.copy()
 
     K = np.asarray(K, float)
@@ -23,9 +28,8 @@ def binomial_estimate(y, ntrials, covariate, K):
     n = K.shape[0]
     G = np.random.randint(0, 3, size=(n, 1))
     G = np.asarray(G, float)
-    y_ = y[:, np.newaxis]
 
-    (_, _, ldelta, sigg2, beta0) = train_associations(G, y_,
+    (_, _, ldelta, sigg2, beta0) = train_associations(G, phenotype,
                                                   K, C=covariate,
                                                   addBiasTerm=False)
 

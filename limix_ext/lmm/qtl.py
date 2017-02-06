@@ -1,4 +1,5 @@
 from __future__ import absolute_import
+from __future__ import division
 
 import logging
 
@@ -91,9 +92,9 @@ def binomial_scan(nsuccesses, ntrials, X, K, covariates, rank_normalize=False):
 
     gower_normalization(K, out=K)
 
-    
+
     if rank_normalize:
-        phenotype = quantile_gaussianize(nsuccesses)
+        phenotype = quantile_gaussianize(nsuccesses / ntrials)
     else:
         phenotype = 1 - norm.isf(clip(1 - nsuccesses / ntrials, 1e-10, 1-1e-10))
 
