@@ -8,7 +8,8 @@ from numpy import asarray
 from ._core import train_associations
 from ..util import gower_normalization
 
-def binomial_estimate(nsuccesses, ntrials, covariate, K):
+def binomial_estimate(nsuccesses, ntrials, covariate, K,
+                      rank_normalize=False):
     ntrials = np.asarray(ntrials, float)
     nsuccesses = np.asarray(nsuccesses, float).copy()
     ntrials = np.asarray(ntrials, float).copy()
