@@ -5,6 +5,8 @@ import scipy as sp
 import scipy.stats
 from numpy import asarray
 
+from scipy.stats import norm
+
 from ._core import train_associations
 from ..util import gower_normalization
 
@@ -18,7 +20,7 @@ def binomial_estimate(nsuccesses, ntrials, covariate, K,
     if rank_normalize:
         phenotype = quantile_gaussianize(nsuccesses / ntrials)
     else:
-        phenotype = 1 - norm.isf(clip(1 - nsuccesses / ntrials, 1e-10, 1-1e-10))
+        phenotype = norm.isf(clip(1 - nsuccesses / ntrials, 1e-10, 1-1e-10))
 
     phenotype = phenotype[:, newaxis]
 

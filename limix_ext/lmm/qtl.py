@@ -96,7 +96,7 @@ def binomial_scan(nsuccesses, ntrials, X, K, covariates, rank_normalize=False):
     if rank_normalize:
         phenotype = quantile_gaussianize(nsuccesses / ntrials)
     else:
-        phenotype = 1 - norm.isf(clip(1 - nsuccesses / ntrials, 1e-10, 1-1e-10))
+        phenotype = norm.isf(clip(1 - nsuccesses / ntrials, 1e-10, 1-1e-10))
 
     phenotype = phenotype[:, newaxis]
 
