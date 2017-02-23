@@ -1,6 +1,10 @@
 language: python
 sudo: required
 dist: trusty
+addons:
+  apt:
+    packages:
+      - libxml2-dev
 git:
   depth: 5
 matrix:
@@ -8,12 +12,6 @@ matrix:
   - python: 2.7
   - python: 3.5
   - python: 3.6
-before_install:
-- curl -OL http://raw.github.com/craigcitro/r-travis/master/scripts/travis-tool.sh
-- chmod 755 ./travis-tool.sh
-- ./travis-tool.sh bootstrap
-install:
-- ./travis-tool.sh install_deps
 script:
 - python setup.py sdist
 - pip install dist/`ls dist | grep -i -E '\.(gz)$' | head -1`

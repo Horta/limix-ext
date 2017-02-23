@@ -16,7 +16,7 @@ def setup_package():
     pytest_runner = ['pytest-runner>=2.9'] if needs_pytest else []
 
     setup_requires = ['cffi>=1.7'] + pytest_runner
-    install_requires = ['limix_util', 'rpy2', 'limix_tool', 'scipy_sugar']
+    install_requires = ['limix_util', 'limix_tool', 'scipy_sugar']
     tests_require = install_requires
 
     metadata = dict(

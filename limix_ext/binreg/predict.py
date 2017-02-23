@@ -2,13 +2,16 @@ import numpy as np
 import pandas
 import scipy as sp
 
-import rpy2.robjects as ro
-import rpy2.robjects.numpy2ri
-import rpy2.robjects.pandas2ri
-from rpy2.robjects.packages import importr
+try:
+    import rpy2.robjects as ro
+    import rpy2.robjects.numpy2ri
+    import rpy2.robjects.pandas2ri
+    from rpy2.robjects.packages import importr
 
-rpy2.robjects.numpy2ri.activate()
-rpy2.robjects.pandas2ri.activate()
+    rpy2.robjects.numpy2ri.activate()
+    rpy2.robjects.pandas2ri.activate()
+except ImportError:
+    pass
 
 def _create_r_env(y, ntrials, G):
     yy = np.concatenate([ntrials-y, y])
