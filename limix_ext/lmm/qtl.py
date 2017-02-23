@@ -12,6 +12,8 @@ from numpy import clip
 
 from scipy.stats import norm
 
+from scipy_sugar.stats import quantile_gaussianize
+
 from ..util import gower_normalization
 from ..util import clone
 
@@ -81,7 +83,6 @@ def bernoulli_scan(outcome, X, K, covariates):
 def binomial_scan(nsuccesses, ntrials, X, K, covariates, rank_normalize=False):
     logger = logging.getLogger(__name__)
 
-    from lim.util.preprocess import quantile_gaussianize
     logger.info('Gower normalizing')
 
     nsuccesses = clone(nsuccesses)
