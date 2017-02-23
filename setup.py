@@ -16,8 +16,9 @@ def setup_package():
     pytest_runner = ['pytest-runner>=2.9'] if needs_pytest else []
 
     setup_requires = ['cffi>=1.7'] + pytest_runner
-    install_requires = ['limix_util', 'limix_tool', 'scipy-sugar>=1.0.1',
-                        'pandas']
+    install_requires = [
+        'limix_util', 'limix_tool', 'scipy-sugar>=1.0.1', 'pandas'
+    ]
     tests_require = install_requires
 
     metadata = dict(
@@ -32,23 +33,14 @@ def setup_package():
         install_requires=install_requires,
         setup_requires=setup_requires,
         tests_require=tests_require,
-        include_package_data=True
-    )
-
-    try:
-        from distutils.command.bdist_conda import CondaDistribution
-    except ImportError:
-        pass
-    else:
-        metadata['distclass'] = CondaDistribution
-        metadata['conda_buildnum'] = 1
-        metadata['conda_features'] = ['mkl']
+        include_package_data=True)
 
     try:
         setup(**metadata)
     finally:
         del sys.path[0]
         os.chdir(old_path)
+
 
 if __name__ == '__main__':
     setup_package()

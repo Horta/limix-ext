@@ -6,7 +6,7 @@ import numpy as np
 from numpy import asarray
 
 from ..util import gower_normalization
-from ._core import run_scan
+from .core import run_scan
 
 
 def binomial_estimate(nsuccesses, ntrials, covariate, K):
