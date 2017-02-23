@@ -8,6 +8,12 @@ matrix:
   - python: 2.7
   - python: 3.5
   - python: 3.6
+before_install:
+- curl -OL http://raw.github.com/craigcitro/r-travis/master/scripts/travis-tool.sh
+- chmod 755 ./travis-tool.sh
+- ./travis-tool.sh bootstrap
+install:
+- ./travis-tool.sh install_deps
 script:
 - python setup.py sdist
 - pip install dist/`ls dist | grep -i -E '\.(gz)$' | head -1`
@@ -18,6 +24,7 @@ notifications:
   email: false
 deploy:
   provider: pypi
+  skip_upload_docs: true
   user: dhorta
   password:
     secure: F2Fdmzu+PYlbcp9uPXzBDRaHud/rsxC4k1Js+sHss7uT59dez6XByZFeJvsR7z0rZsOINPzDMdneNKwIbemUJGsW9KSUi9Zj+4TeCbzob6BHOOMzpIYAaUC5jhZcSB6WHMv2jIg4SvjrF92FIojTIRbPTev7FX2jQpXpgR6lChVTJxFzT5q+ls2QAL3yAsGsyxE+hcAcvTf+S7kjjaO30pH4SApdHs7rZzKdxxIBhJ3VKvcOGMhfSPxvvZ5hmGJr6ZcflXWBSSpaGYDPrNWpD9TBBOp6U8HUoJrL6VZPskbKuJWjjbvQUaYPqcnqj6C22g5Jf00Op4tunQchFkST70sRkxNj3nMCqN9rk8iihcNNONMPOl8inSNzdJeoYe3OZasOqlfmIXNHxqOoyGJYBYMoP/xvJyzDRKxjSK+qauiGb5dJhuPrb+VpdstgRYXIep/y/ti2vimB+j286GnVLmz3K0UNEKY7jVa5JZ0wv0XEKysPa0gVs8ix7uAP5VTm4G2SPebLpVDKGJ3YWSzIvTVk0O6cgDwWS8X3SA1Lev48UvYeL6MoAevVRDX4jd2bsNMm4VdrCskm1vsy2iYQS3D1YetvurioF+QfLGDZ55KZebHDuAHzstpHDCLlo9NbJI3guLvvMurTVULvjUZvNIszx3DXeKls+K1A+A6lY9Q=
