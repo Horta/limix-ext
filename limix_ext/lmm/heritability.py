@@ -11,7 +11,9 @@ from ..util import gower_normalization
 from ._core import train_associations
 
 
-def binomial_estimate(nsuccesses, ntrials, covariate, K):
+def binomial_estimate(nsuccesses, ntrials, covariate, K,
+                      rank_normalize=False):
+    from lim.util.preprocess import quantile_gaussianize
     ntrials = np.asarray(ntrials, float)
     nsuccesses = np.asarray(nsuccesses, float).copy()
     ntrials = np.asarray(ntrials, float).copy()
