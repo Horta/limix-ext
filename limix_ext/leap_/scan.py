@@ -5,7 +5,7 @@ import logging
 import numpy as np
 from numpy import asarray
 
-from limix_tool.kinship import gower_kinship_normalization
+from ..util import gower_normalization
 
 from .core import leap_scan
 
@@ -13,7 +13,7 @@ from .core import leap_scan
 def scan(y, covariate, X, K, K_nsnps, prevalence):
     logger = logging.getLogger(__name__)
     logger.info('Gower normalizing')
-    K = gower_kinship_normalization(asarray(K, float))
+    K = gower_normalization(asarray(K, float))
     X = asarray(X, float).copy()
     y = asarray(y, float).copy()
     covariate = asarray(covariate, float).copy()

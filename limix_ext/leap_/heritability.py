@@ -2,11 +2,11 @@ import numpy as np
 from numpy import asarray
 
 from core import leap_scan
-from limix_tool.kinship import gower_kinship_normalization
+from ..util import gower_normalization
 
 
 def estimate(y, covariate, K, K_nsnps, prevalence):
-    K = gower_kinship_normalization(asarray(K, float))
+    K = gower_normalization(asarray(K, float))
     y = asarray(y, float).copy()
     return _bernoulli_estimator(y, covariate, K, K_nsnps, prevalence)
 

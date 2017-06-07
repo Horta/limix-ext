@@ -3,11 +3,11 @@ from numpy import asarray
 
 from core import test_ltmlm
 from limix_tool.genotype import maf
-from limix_tool.kinship import gower_kinship_normalization
+from ..util import gower_normalization
 
 
 def scan(y, X, K, prevalence):
-    K = gower_kinship_normalization(asarray(K, float))
+    K = gower_normalization(asarray(K, float))
     X = asarray(X, int)
     y = asarray(y, float)
 
