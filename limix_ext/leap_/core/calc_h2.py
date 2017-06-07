@@ -3,7 +3,7 @@ import logging
 import numpy as np
 import scipy.stats as stats
 
-from eigd import eigenDecompose
+from .eigd import eigenDecompose
 
 
 def calcLiabThreholds(U, S, keepArr, phe, numRemovePCs, prev):

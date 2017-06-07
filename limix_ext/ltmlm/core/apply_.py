@@ -7,8 +7,8 @@ from subprocess import CalledProcessError, call, check_output
 
 import numpy as np
 
-from .._path import temp_folder
-from ..util import platform
+from ..._path import temp_folder
+from ...util import platform
 
 _letras = np.array([['A', 'C'],
  ['A', 'G'],
@@ -34,7 +34,7 @@ def _write_snp(bgX, folder, prefix):
     fname = "%s.snp" % prefix
     nletras = _letras.shape[0]
     with open(join(folder,  fname), "w") as f:
-        for i in xrange(nsnps):
+        for i in range(nsnps):
 
             ii = i % nletras
             fina = "%s %s" % (_letras[ii, 0], _letras[ii, 1])
@@ -53,7 +53,7 @@ def _write_ind(y, folder, prefix):
     n = y.shape[0]
     fname = "%s.ind" % prefix
     with open(join(folder,  fname), "w") as f:
-        for i in xrange(n):
+        for i in range(n):
             status = 'Case' if y[i] == 1 else 'Control'
             sex = 'F' if i % 2 == 0 else 'M'
             f.write("SAMPLE%d %s %s" % (i, sex, status))

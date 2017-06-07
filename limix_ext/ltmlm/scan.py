@@ -1,8 +1,8 @@
 import numpy as np
 from numpy import asarray
 
-from core import test_ltmlm
-from limix_tool.genotype import maf
+from .core import test_ltmlm
+from ..util import maf
 from ..util import gower_normalization
 
 

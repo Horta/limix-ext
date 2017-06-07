@@ -1,7 +1,7 @@
 import numpy as np
 from numpy import asarray
 
-from core import leap_scan
+from .core import leap_scan
 from ..util import gower_normalization
 
 

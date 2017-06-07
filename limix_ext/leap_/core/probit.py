@@ -7,7 +7,7 @@ import scipy.stats as stats
 
 
 def _create_iid(nsamples):
-    return [(str(i), str(i)) for i in xrange(nsamples)]
+    return [(str(i), str(i)) for i in range(nsamples)]
 
 def probit(nsnps, nsamples, pheno, h2, prev, U, S, outFile=None, covar=None,
            thresholds=None, nofail=False, numSkipTopPCs=0, mineig=1e-3,
@@ -157,7 +157,7 @@ def probitRegression(X, y, thresholds, numSNPs, numFixedFeatures, h2, useHess, m
     if (numFixedFeatures > 0):
         thresholdsEM = np.zeros(X.shape[0]) + thresholds
 
-        for i in xrange(maxFixedIters):
+        for i in range(maxFixedIters):
             logger.debug('Beginning fixed effects iteration %d.', i+1)
             t0 = time.time()
             prevBeta = beta.copy()
@@ -181,7 +181,8 @@ def probitRegression(X, y, thresholds, numSNPs, numFixedFeatures, h2, useHess, m
                 #raise Exception('Learning failed with message: ' + optObj.message)
             beta[numFixedFeatures:] = optObj.x
 
-            diff = np.sqrt(np.mean(beta[:numFixedFeatures]**2 - prevBeta[:numFixedFeatures]**2))
+            vv = max(np.mean(beta[:numFixedFeatures]**2 - prevBeta[:numFixedFeatures]**2), 0)
+            diff = np.sqrt(vv)
             logger.debug('Done in %0.2f seconds.', time.time()-t0)
             logger.debug('Diff: %0.4e.', diff)
             if (diff < epsilon): break

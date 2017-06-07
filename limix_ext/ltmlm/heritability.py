@@ -1,6 +1,6 @@
 from numpy import asarray
 
-from core import estimate_h2
+from .core import estimate_h2
 from ..util import gower_normalization
 
 
