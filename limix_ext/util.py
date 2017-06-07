@@ -1,5 +1,9 @@
-from numpy import empty_like
-from numpy import copyto
+from __future__ import absolute_import
+
+from sys import platform as _platform
+
+from numpy import copyto, empty_like
+
 
 def gower_normalization(K, out=None):
     """Perform Gower normalizion on covariance matrix K.
@@ -13,12 +17,14 @@ def gower_normalization(K, out=None):
     copyto(out, K)
     out *= c
 
+
 def clone(X):
     if X is None:
         return None
     Y = empty_like(X, dtype=float, order='C')
     copyto(Y, X)
     return Y
+
 
 def maf(X):
     r"""Compute minor allele frequencies.
@@ -54,9 +60,21 @@ def maf(X):
     s1 = 1 - s0
     return minimum(s0, s1)
 
+
 def _check_encoding(X):
     u = unique(X)
     u = u[isfinite(u)]
     if len(u) > 3:
         return False
     return all([i in set([0, 1, 2]) for i in u])
+
+
+def platform():
+    """Returns whether it is running on `linux`, `osx`, or `win`."""
+    if _platform == "linux" or _platform == "linux2":
+        return 'linux'
+    elif _platform == "darwin":
+        return 'osx'
+    elif _platform == "win32":
+        return 'win'
+    return 'unknown'

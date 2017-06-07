@@ -7,8 +7,8 @@ from subprocess import CalledProcessError, call, check_output
 
 import numpy as np
 
-from limix_util.path import temp_folder
-from limix_util.sys import platform
+from .._path import temp_folder
+from ..util import platform
 
 _letras = np.array([['A', 'C'],
  ['A', 'G'],
