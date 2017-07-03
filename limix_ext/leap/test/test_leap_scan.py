@@ -1,6 +1,6 @@
 import numpy as np
 import unittest
-from limix_ext.leap_.scan import scan
+from limix_ext.leap.scan import scan
 
 def test_leap_scan_bernoulli():
     random = np.random.RandomState(981)

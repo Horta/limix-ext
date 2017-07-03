@@ -1,6 +1,6 @@
 import numpy as np
 import unittest
-from limix_ext.leap_.heritability import estimate
+from limix_ext.leap.heritability import estimate
 
 def test_leap_bernoulli():
     random = np.random.RandomState(981)

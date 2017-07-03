@@ -1,6 +1,7 @@
 from __future__ import absolute_import as _absolute_import
 
 from . import lmm
+from . import leap
 from . import logreg
 from . import binreg
 from . import macau
