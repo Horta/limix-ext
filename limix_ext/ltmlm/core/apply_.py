@@ -167,7 +167,6 @@ def _run_ltmlm(folder, threshold, chi2f, heritMax):
 
     cfolder = os.path.dirname(os.path.realpath(__file__))
 
-    import pdb; pdb.set_trace()
     cmd = join(cfolder, "LTMLM") + " -t "+threshold+"   -p "\
            +chi2f+"  -H "+heritMax
 
@@ -181,7 +180,8 @@ def _run_ltmlm(folder, threshold, chi2f, heritMax):
                          shell=True, env=my_env)
     output, output_err = p.communicate()
     output = str(output)
-    output_err = str(output_err)
+    if output_err is not None:
+        output_err = str(output_err)
     err_msg = ('Warning every extreme allele frequency may mess up' +
                ' estimates or normalized SNPs')
     if err_msg in output:
