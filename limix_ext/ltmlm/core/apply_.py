@@ -18,6 +18,8 @@ _letras = np.array([['A', 'C'],
  ['T', 'A'],
  ['G', 'T']])
 
+TIMEOUT = 60 * 60 * 12
+
 def _write_geno(bgX, folder, prefix):
     if not np.all(np.asarray(bgX, int) == bgX):
         raise Exception('Genetic markers expected to be integers.')
@@ -162,7 +164,7 @@ def _convert_gcta2cov(folder, indf, prefix):
 
     return covf
 
-def _run_ltmlm(folder, threshold, chi2f, heritMax):
+def _run_ltmlm(folder, threshold, chi2f, heritMax, timeout):
     chi2f = join(folder, chi2f)
 
     cfolder = os.path.dirname(os.path.realpath(__file__))
@@ -178,8 +180,10 @@ def _run_ltmlm(folder, threshold, chi2f, heritMax):
     p = subprocess.Popen(cmd, stdin=subprocess.PIPE,
                          stdout=subprocess.PIPE,
                          shell=True, env=my_env)
-    output, output_err = p.communicate()
+
+    output, output_err = p.communicate(timeout=timeout)
     output = str(output)
+
     if output_err is not None:
         output_err = str(output_err)
     err_msg = ('Warning every extreme allele frequency may mess up' +
@@ -217,12 +221,12 @@ def _read_chi2(chi2f):
 
     return np.array(chi2vals)
 
-def estimate_h2(K, y, prevalence):
+def estimate_h2(K, y, prevalence, timeout=TIMEOUT):
     X = np.random.randint(0, 3, (K.shape[0], 30))
-    (h2, _, _) = test_ltmlm(X, K, y, prevalence)
+    (h2, _, _) = test_ltmlm(X, K, y, prevalence, timeout=timeout)
     return h2
 
-def test_ltmlm_geno_bg(fgX, bgX, y, prevalence):
+def test_ltmlm_geno_bg(fgX, bgX, y, prevalence, timeout=TIMEOUT):
     import scipy.stats as st
 
     threshold = str(-st.norm.ppf(prevalence))
@@ -250,7 +254,7 @@ def test_ltmlm_geno_bg(fgX, bgX, y, prevalence):
         chi2f = _write_chi2file(folder, genof_bg, snpf_bg, indf,
                                 covf, prefix)
 
-        _run_ltmlm(folder, threshold, chi2f, heritMax)
+        _run_ltmlm(folder, threshold, chi2f, heritMax, timeout=timeout)
 
         herif = prefix + ".herit"
         h2 = _read_heritability(join(folder, herif))
@@ -269,7 +273,7 @@ def  _check_os():
     return False
 
 
-def test_ltmlm(X, K, y, prevalence):
+def test_ltmlm(X, K, y, prevalence, timeout=TIMEOUT):
     import scipy.stats as st
 
     if not _check_os():
@@ -292,7 +296,7 @@ def test_ltmlm(X, K, y, prevalence):
         chi2f = _write_chi2file(folder, genof_fg, snpf_fg, indf,
                                 covf, prefix)
 
-        _run_ltmlm(folder, threshold, chi2f, heritMax)
+        _run_ltmlm(folder, threshold, chi2f, heritMax, timeout=timeout)
 
         herif = prefix + ".herit"
         h2 = _read_heritability(join(folder, herif))
