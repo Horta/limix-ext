@@ -104,15 +104,17 @@ def _write_chi2file(folder, genof, snpf, indf, covf, prefix):
     outf = join(folder, prefix + ".chisq")
     heritf = join(folder, prefix + ".herit")
     pmlf = join(folder, prefix + ".pml")
+    pclf = join(folder, prefix + ".pc")
 
     conf_str = ""
-    conf_str += "genotypename:  "+genof+"\n"
-    conf_str += "snpname:       "+snpf+"\n"
-    conf_str += "indivname:     "+indf+"\n"
-    conf_str += "covname:     "+covf+"\n"
-    conf_str += "outputname:    "+outf+"\n"
-    conf_str += "heritname:       "+heritf+"\n"
-    conf_str += "pmlname:       "+pmlf+"\n"
+    conf_str += "genotype:  "+genof+"\n"
+    conf_str += "snp:       "+snpf+"\n"
+    conf_str += "indiv:     "+indf+"\n"
+    conf_str += "cov:     "+covf+"\n"
+    conf_str += "output:    "+outf+"\n"
+    conf_str += "herit:       "+heritf+"\n"
+    conf_str += "pml:       "+pmlf+"\n"
+    conf_str += "pc:       "+pclf+"\n"
 
     with open(join(folder, fname), "w") as f:
         f.write(conf_str)
@@ -165,6 +167,7 @@ def _run_ltmlm(folder, threshold, chi2f, heritMax):
 
     cfolder = os.path.dirname(os.path.realpath(__file__))
 
+    import pdb; pdb.set_trace()
     cmd = join(cfolder, "LTMLM") + " -t "+threshold+"   -p "\
            +chi2f+"  -H "+heritMax
 
@@ -177,6 +180,8 @@ def _run_ltmlm(folder, threshold, chi2f, heritMax):
                          stdout=subprocess.PIPE,
                          shell=True, env=my_env)
     output, output_err = p.communicate()
+    output = str(output)
+    output_err = str(output_err)
     err_msg = ('Warning every extreme allele frequency may mess up' +
                ' estimates or normalized SNPs')
     if err_msg in output:
@@ -213,7 +218,7 @@ def _read_chi2(chi2f):
     return np.array(chi2vals)
 
 def estimate_h2(K, y, prevalence):
-    X = np.random.randint(0, 3, (K.shape[0], 2))
+    X = np.random.randint(0, 3, (K.shape[0], 30))
     (h2, _, _) = test_ltmlm(X, K, y, prevalence)
     return h2
 
