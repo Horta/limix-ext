@@ -5,6 +5,7 @@ from . import leap
 from . import logreg
 from . import binreg
 from . import macau
+from . import ltmlm
 
 from pkg_resources import get_distribution as _get_distribution
 from pkg_resources import DistributionNotFound as _DistributionNotFound
