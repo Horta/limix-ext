@@ -36,11 +36,11 @@ def apply_this_kinship(G, K, y, prevalence, nsnps_back, cutoff,
     logger.info('Heritability estimation finished')
     if h2 >= 1.:
         logger.warn("LEAP found h2 greater than or equal to 1: %f. %s", h2,
-                    "Clipping it to 0.9.")
+                    "Clipping it to 0.99.")
         h2 = 0.9
     if h2 <= 0.:
         logger.warn("LEAP found h2 smaller than or equal to 0: %f. %s", h2,
-                    "Clipping it to 0.1.")
+                    "Clipping it to 0.01.")
         h2 = 0.1
 
     logger.info('Probit fitting')

@@ -187,11 +187,11 @@ def calc_h2(pheno, prev, eigen, keepArr, numRemovePCs, h2coeff, lowtail):
             h2 = calcH2Continuous_twotails(XXT, phe, keepArr, prev, h2coeff)
 
     if (h2 <= 0):
-        h2 = 0.0
+        h2 = 0.01
         print("Negative heritability found. Exitting...")
         # raise Exception("Negative heritability found. Exitting...")
     if (np.isnan(h2)):
-        h2 = 0.0
+        h2 = 0.01
         print("Invalid heritability estimate. " +
               "Please double-check your input for any errors.")
         # raise Exception("Invalid heritability estimate. "+

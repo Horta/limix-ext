@@ -222,8 +222,17 @@ def _read_chi2(chi2f):
     return np.array(chi2vals)
 
 def estimate_h2(K, y, prevalence, timeout=TIMEOUT):
-    X = np.random.randint(0, 3, (K.shape[0], 30))
+    ok = False
+    nfake = 5
+
+    while not ok:
+        X = np.random.randint(0, 3, (K.shape[0], nfake))
+        s = np.std(X.astype(float), axis=0)
+        ok = np.all(s > 0)
+        nfake += 1
+
     (h2, _, _) = test_ltmlm(X, K, y, prevalence, timeout=timeout)
+
     return h2
 
 def test_ltmlm_geno_bg(fgX, bgX, y, prevalence, timeout=TIMEOUT):
