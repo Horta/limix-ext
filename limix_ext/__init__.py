@@ -1,14 +1,9 @@
 from __future__ import absolute_import as _absolute_import
 
-from . import lmm
-from . import leap
-from . import logreg
-from . import binreg
-from . import macau
-from . import ltmlm
-
-from pkg_resources import get_distribution as _get_distribution
 from pkg_resources import DistributionNotFound as _DistributionNotFound
+from pkg_resources import get_distribution as _get_distribution
+
+from . import binreg, gcta, leap, lmm, logreg, ltmlm, macau
 
 try:
     __version__ = _get_distribution('limix_ext').version
