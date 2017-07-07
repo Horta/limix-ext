@@ -3,7 +3,7 @@ import unittest
 import numpy as np
 
 from limix_ext.gcta.heritability import estimate
-from limix_util.sys import platform
+from limix_ext.util import platform
 
 
 # @unittest.skipUnless(platform() == "linux", "requires Linux")

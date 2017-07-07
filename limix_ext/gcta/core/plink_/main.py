@@ -1,11 +1,15 @@
 from __future__ import absolute_import
+
 import logging
 import subprocess
-from numpy import asarray
+
 import numpy as np
-from numba import jit, uint8, int64, void
+from numba import int64, jit, uint8, void
+from numpy import asarray
+
+from limix_ext._path import bin_exists
+
 from . import write
-from limix_util.path import bin_exists
 
 
 def check_plink_exists():
@@ -39,7 +43,7 @@ def _create_ped(dst_filepath, y, G):
         for j in range(n):
             f.write('%d %d 1 1 0 %d ' % (j + 1, j + 1, y[j]))
             _create_ped_line(line, asarray(G[j, :], int))
-            f.write(line)
+            f.write(str(line))
 
 
 def create_ped(dst_filepath, y, G):
@@ -49,7 +53,8 @@ def create_ped(dst_filepath, y, G):
 
     u = np.unique(G)
     if not np.all([ui in set([0, 1, 2]) for ui in u]):
-        raise Exception('Genetic markers matrix must contain only 0, 1, and 2.')
+        raise Exception(
+            'Genetic markers matrix must contain only 0, 1, and 2.')
 
     u = np.unique(y)
     if not np.all([int(ui) == ui for ui in u]):
@@ -57,6 +62,7 @@ def create_ped(dst_filepath, y, G):
                         ' phenotype.')
 
     _create_ped(dst_filepath, y, G)
+
 
 #  chromosome (1-22, X, Y or 0 if unplaced)
 #  rs# or snp identifier
@@ -84,17 +90,19 @@ def create_map(dst_filepath, chroms, rss=None, gds=None, bps=None):
 
 def create_phen(filepath, y):
     y = asarray(y)
-    if array_.isint_alike(y):
-        write.write_phen_int(filepath, asarray(y, int))
-    else:
-        raise NotImplementedError('create_phen is not suitable for non-int' +
-                                  ' phenotype yet.')
+    # if array_.isint_alike(y):
+    write.write_phen_int(filepath, asarray(y, int))
+    # else:
+    #     raise NotImplementedError('create_phen is not suitable for non-int' +
+    #                               ' phenotype yet.')
 
 
 def create_bed(filepath, na_rep='-9', cod_type='binary'):
     check_plink_exists()
-    cmd = ["plink", "--file", filepath, "--out", filepath, "--make-bed",
-           "--noweb", '--missing-phenotype', na_rep, '--allow-no-sex']
+    cmd = [
+        "plink", "--file", filepath, "--out", filepath, "--make-bed",
+        "--noweb", '--missing-phenotype', na_rep, '--allow-no-sex'
+    ]
     if cod_type == 'binary':
         cmd.append('--1')
     p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -103,10 +111,11 @@ def create_bed(filepath, na_rep='-9', cod_type='binary'):
     if len(err) > 0:
         logging.getLogger(__file__).warn(err)
 
+
 if __name__ == '__main__':
-    dst_filepath = '/Users/horta/out.ped'
+    dst_filepath = b'/Users/horta/out.ped'
     random = np.random.RandomState(539)
     G = random.randint(0, 3, (4, 10))
     y = random.randint(0, 2, 4)
     create_ped(dst_filepath, y, G)
-    create_map('/Users/horta/out.map', np.ones(30))
+    create_map(b'/Users/horta/out.map', np.ones(30))

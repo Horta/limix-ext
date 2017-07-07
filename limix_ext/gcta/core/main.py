@@ -44,10 +44,10 @@ def prepare_for_their_kinship(folder, prefix, G, y, chromosome):
     G = G.astype(int)
     chromosome = chromosome.astype(int)
 
-    filepath = os.path.join(folder, prefix)
-    plink_.create_ped(filepath + '.ped', y, G)
-    plink_.create_map(filepath + '.map', chromosome)
-    plink_.create_phen(filepath + '.phe', y)
+    filepath = os.path.join(folder, prefix).encode()
+    plink_.create_ped(filepath + b'.ped', y, G)
+    plink_.create_map(filepath + b'.map', chromosome)
+    plink_.create_phen(filepath + b'.phe', y)
     plink_.create_bed(filepath)
 
     _create_their_kinship(folder, prefix)
