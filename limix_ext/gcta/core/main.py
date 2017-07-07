@@ -6,10 +6,11 @@ import tempfile
 
 import numpy as np
 
-from limix_tool import plink_
 from limix_util.path import temp_folder
 from limix_util.sys import platform
 from result import Result
+
+from . import plink_
 
 
 def _create_their_kinship(bed_folder, prefix):
