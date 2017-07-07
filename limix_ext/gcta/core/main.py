@@ -6,7 +6,6 @@ import tempfile
 
 import numpy as np
 
-from limix_math import isint_alike
 from limix_tool import plink_
 from limix_util.path import temp_folder
 from limix_util.sys import platform
@@ -110,10 +109,6 @@ def run_gcta(bed_folder, prefix, prevalence, diag_one=False):
 
 def estimate_h2_gcta(G, y, prevalence):
 
-    if not isint_alike(G):
-        raise ValueError('The genetic markers matrix must contain only integer'
-                         + 'values.')
-
     outdir = tempfile.mkdtemp()
 
     try:
@@ -122,7 +117,7 @@ def estimate_h2_gcta(G, y, prevalence):
         result = run_gcta(outdir, 'data', prevalence)
     except Exception as e:
         shutil.rmtree(outdir)
-        print str(e)
+        print(str(e))
         raise
 
     shutil.rmtree(outdir)
