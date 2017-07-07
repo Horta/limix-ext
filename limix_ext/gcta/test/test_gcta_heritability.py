@@ -29,7 +29,5 @@ def test_bernoulli():
     y = np.zeros_like(z)
     y[z > 0] = 1.
     prevalence = 0.5
-    import pdb
-    pdb.set_trace()
     h2 = estimate(Gi, y, prevalence)
     np.testing.assert_allclose(h2, 0.329104, rtol=1e-4)
