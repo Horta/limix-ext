@@ -29,7 +29,7 @@ def plink_extension():
 
     depends = src + hdr
 
-    ext = Extension('limix_ext/gcta/core/plink_/write', src, depends=depends)
+    ext = Extension('limix_ext.gcta.core.plink_.write', src, depends=depends)
 
     return ext
 
