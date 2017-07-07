@@ -43,7 +43,8 @@ def _create_ped(dst_filepath, y, G):
         for j in range(n):
             f.write('%d %d 1 1 0 %d ' % (j + 1, j + 1, y[j]))
             _create_ped_line(line, asarray(G[j, :], int))
-            f.write(str(line))
+            bla = ' '.join([chr(v) for v in list(line)])
+            f.write(bla)
 
 
 def create_ped(dst_filepath, y, G):
