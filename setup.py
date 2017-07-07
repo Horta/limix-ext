@@ -4,6 +4,34 @@ import os
 import sys
 
 from setuptools import find_packages, setup
+from setuptools.extension import Extension
+
+try:
+    import cython
+    from Cython.Build import cythonize
+    from Cython.Distutils import build_ext
+except ImportError:
+    print("Error: cython package couldn't be found." +
+          " Please, install it so I can proceed.")
+    sys.exit(1)
+
+
+def plink_extension():
+    curdir = os.path.abspath(os.path.dirname(__file__))
+
+    plink_folder = os.path.join(curdir, 'limix_ext/gcta/core/plink_/')
+
+    src = ['write.pyx']
+    src = [os.path.join(plink_folder, s) for s in src]
+
+    hdr = ['write.pxd']
+    hdr = [os.path.join(plink_folder, h) for h in hdr]
+
+    depends = src + hdr
+
+    ext = Extension('limix_ext/gcta/core/plink_/write', src, depends=depends)
+
+    return ext
 
 
 def setup_package():
@@ -28,6 +56,7 @@ def setup_package():
         url='https://github.com/Horta/limix-ext',
         packages=find_packages(),
         zip_safe=False,
+        ext_modules=cythonize([plink_extension()]),
         install_requires=install_requires,
         setup_requires=setup_requires,
         tests_require=tests_require,
