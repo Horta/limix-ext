@@ -1,12 +1,11 @@
-import unittest
-
 import numpy as np
+import pytest
 
 from limix_ext.gcta.heritability import estimate
 from limix_ext.util import platform
 
 
-# @unittest.skipUnless(platform() == "linux", "requires Linux")
+@pytest.mark.skipif(platform() != "linux", reason="requires linux")
 def test_bernoulli():
     random = np.random.RandomState(981)
     n = 500
