@@ -216,7 +216,7 @@ def _read_chi2(chi2f):
             line = f.readline()
             if not line: break
             vals = line.split(",")
-            if len(vals) == 2:
+            if len(vals) == 3:
                 chi2vals.append(float(vals[1]))
 
     return np.array(chi2vals)
