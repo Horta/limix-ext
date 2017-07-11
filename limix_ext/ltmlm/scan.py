@@ -1,9 +1,8 @@
 import numpy as np
 from numpy import asarray
 
+from ..util import gower_normalization, maf
 from .core import test_ltmlm
-from ..util import maf
-from ..util import gower_normalization
 
 
 def scan(y, X, K, prevalence):
@@ -11,18 +10,10 @@ def scan(y, X, K, prevalence):
     X = asarray(X, int)
     y = asarray(y, float)
 
-    mafs = maf(X)
+    (_, pvals, stats) = test_ltmlm(X, K, y, prevalence)
 
-    ok = np.full(X.shape[1], True, dtype=bool)
-    ok[mafs <= 0.05] = False
-
-    (_, pvals_, stats_) = test_ltmlm(X[:,ok], K, y, prevalence)
-
-    pvals = np.ones(X.shape[1])
-    pvals[ok] = np.asarray(pvals_, float).ravel()
-
-    stats = np.zeros(X.shape[1])
-    stats[ok] = np.asarray(stats_, float).ravel()
+    pvals = np.asarray(pvalues, float).ravel()
+    stats = np.asarray(stats, float).ravel()
 
     if not np.all(np.isfinite(pvals)):
         raise ValueError("There is some non-finite stuff in this p-values.")
