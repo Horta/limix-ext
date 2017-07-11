@@ -18,15 +18,12 @@ def scan(y, covariate, X, K, K_nsnps, prevalence):
     y = asarray(y, float).copy()
     covariate = asarray(covariate, float).copy()
 
-    #ok = X.std(0) > 0
-    pvals = np.ones(X.shape[1])
-    stats = np.zeros(X.shape[1])
     logger.info('leap_scan started')
-    (stats_, pvals_, _) = leap_scan(X, K, y, prevalence, K_nsnps,
+    (stats, pvals, _) = leap_scan(X, K, y, prevalence, K_nsnps,
                                 cutoff=np.inf, covariates=covariate)
     logger.info('leap_scan finished')
-    pvals = np.asarray(pvals_, float).ravel()
-    stats = np.asarray(stats_, float).ravel()
+    pvals = np.asarray(pvals, float).ravel()
+    stats = np.asarray(stats, float).ravel()
 
     nok = np.logical_not(np.isfinite(pvals))
     pvals[nok] = 1.
