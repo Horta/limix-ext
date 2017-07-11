@@ -12,7 +12,7 @@ def scan(y, X, K, prevalence):
 
     (_, pvals, stats) = test_ltmlm(X, K, y, prevalence)
 
-    pvals = np.asarray(pvalues, float).ravel()
+    pvals = np.asarray(pvals, float).ravel()
     stats = np.asarray(stats, float).ravel()
 
     if not np.all(np.isfinite(pvals)):
