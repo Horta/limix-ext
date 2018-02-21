@@ -6,7 +6,7 @@ import numpy as np
 from numpy import asarray
 
 from ..util import gower_normalization
-from .core import run_scan
+from .core import run_heritability
 
 
 def binomial_estimate(nsuccesses, ntrials, covariate, K):
@@ -15,19 +15,13 @@ def binomial_estimate(nsuccesses, ntrials, covariate, K):
     K = gower_normalization(asarray(K, float))
 
     random = np.random.RandomState(3984)
-    X = random.randn(len(nsuccesses), 1)
     nsuccesses = asarray(nsuccesses, float).copy()
     covariate = asarray(covariate, float).copy()
     ntrials = asarray(ntrials, float).copy()
 
-    ok = X.std(0) > 0
-
-    pvals = np.ones(X.shape[1])
-    stats = np.zeros(X.shape[1])
     logger.info('macau heritability started')
 
-    pvals_ = run_scan(nsuccesses, ntrials, K, X[:,ok])
+    h2 = run_heritability(nsuccesses, ntrials, K)
     logger.info('macau heritability finished')
-    pvals[ok] = np.asarray(pvals_, float).ravel()
 
-    return 0.5
+    return h2
