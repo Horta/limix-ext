@@ -11,16 +11,17 @@ from pandas import DataFrame
 def _run_scan(y_fp, ntrials_fp, K_fp, predictor_fp):
     outfolder = tempfile.mkdtemp()
     here = os.path.abspath(os.path.dirname(__file__))
-    cmd = [os.path.join(here, 'macau'), '-g', y_fp, '-t', ntrials_fp,
-                  '-p', predictor_fp,
-                  '-k', K_fp, '-o', outfolder]
+    cmd = [
+        os.path.join(here, 'macau'), '-g', y_fp, '-t', ntrials_fp, '-p',
+        predictor_fp, '-k', K_fp, '-o', outfolder
+    ]
 
     os.makedirs(os.path.join(outfolder, 'output', 'tmp'))
     logger = logging.getLogger(__name__)
     msg = "Running shell list %s.", str(cmd)
     logger.debug(msg)
-    p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                         cwd=outfolder)
+    p = subprocess.Popen(
+        cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=outfolder)
     out, err = p.communicate()
     logger.debug(out)
     if len(err) > 0:
@@ -32,13 +33,13 @@ def _run_scan(y_fp, ntrials_fp, K_fp, predictor_fp):
 
     return df
 
+
 def run_scan(y, ntrials, K, X):
     outfolder = tempfile.mkdtemp()
 
     np.savetxt(os.path.join(outfolder, 'K.txt'), K, fmt='%.10f')
 
     y_df = DataFrame()
-
 
     ntrials_df = DataFrame()
 
@@ -57,15 +58,16 @@ def run_scan(y, ntrials, K, X):
 
     dfs = DataFrame()
     for i in range(X.shape[1]):
-        np.savetxt(os.path.join(outfolder, 'predictor.txt'), X[:,i],
-                   fmt='%.2f')
+        np.savetxt(
+            os.path.join(outfolder, 'predictor.txt'), X[:, i], fmt='%.2f')
 
-        df = _run_scan(os.path.join(outfolder, 'y.txt'),
-                  os.path.join(outfolder, 'ntrials.txt'),
-                  os.path.join(outfolder, 'K.txt'),
-                  os.path.join(outfolder, 'predictor.txt'))
+        df = _run_scan(
+            os.path.join(outfolder, 'y.txt'),
+            os.path.join(outfolder, 'ntrials.txt'),
+            os.path.join(outfolder, 'K.txt'),
+            os.path.join(outfolder, 'predictor.txt'))
         df.index = [i]
         dfs = dfs.append(df)
 
-    df.index.name = 'snp'
+    dfs.index.name = 'snp'
     return np.asarray(dfs['pvalue'])

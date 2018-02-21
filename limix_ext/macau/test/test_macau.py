@@ -44,3 +44,6 @@ def test_macau():
 
     assert_almost_equal(pvals/10, pvals_expected/10, decimal=1)
     assert_almost_equal(stats/10, stats_expected/10, decimal=1)
+
+if __name__ == '__main__':
+    test_macau()
