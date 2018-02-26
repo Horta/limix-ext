@@ -47,15 +47,18 @@ def test_macau():
 @pytest.mark.skipif('linux' not in sys.platform, reason="requires Linux")
 def test_macau_heritability():
 
-    random = RandomState(139)
-    nsamples = 1000
+    # random = RandomState(139)
+    random = RandomState(int(sys.argv[1]))
+    # nsamples = 1000
+    nsamples = int(sys.argv[2])
     nfeatures = 1500
 
     G = random.randn(nsamples, nfeatures) / sqrt(nfeatures)
 
     u = random.randn(nfeatures)
 
-    z = 0.1 + 2 * dot(G, u) + random.randn(nsamples)
+    # z = 0.1 + 2 * dot(G, u) + random.randn(nsamples)
+    z = 0 * dot(G, u) + random.randn(nsamples)
 
     ntrials = random.randint(10, 500, size=nsamples)
 
@@ -67,6 +70,7 @@ def test_macau_heritability():
 
     K = G.dot(G.T)
     h2 = lxt.macau.heritability.binomial_estimate(y, ntrials, M, K)
+    print(h2)
 
 
 if __name__ == '__main__':
