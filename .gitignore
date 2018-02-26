@@ -1,3 +1,4 @@
+*.pickle
 .pytest_cache/
 .cache/
 limix_ext.egg-info/

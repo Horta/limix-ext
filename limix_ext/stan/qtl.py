@@ -6,6 +6,7 @@ import pystan
 import limix
 import os
 import numpy as np
+import pickle as pkl
 
 from ..util import gower_normalization
 from ..util import clone
@@ -16,8 +17,8 @@ def binomial_scan(nsuc, ntri, X, G, K):
 
     logger.info('Gower normalizing')
 
-    nsuc = clone(nsuc)
-    ntri = clone(ntri)
+    nsuc = np.asarray(clone(nsuc), int)
+    ntri = np.asarray(clone(ntri), int)
     X = clone(X)
     G = clone(G)
     K = clone(K)
@@ -47,13 +48,16 @@ def binomial_scan(nsuc, ntri, X, G, K):
 
 
 def load_model():
-    if not os.path.exists('glmm.pickle'):
-        stan_code = open("glmm.stan").read()
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    fp_pickle = os.path.join(dir_path, 'glmm.pickle')
+    fp_model = os.path.join(dir_path, 'glmm.stan')
+    if not os.path.exists(fp_pickle):
+        stan_code = open(fp_model).read()
         sm = pystan.StanModel(model_code=stan_code)
-        with open('glmm.pickle', 'wb') as f:
+        with open(fp_pickle, 'wb') as f:
             pkl.dump(sm, f, pkl.HIGHEST_PROTOCOL)
     else:
-        with open('glmm.pickle', 'rb') as f:
+        with open(fp_pickle, 'rb') as f:
             sm = pkl.load(f)
     return sm
 
