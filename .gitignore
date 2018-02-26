@@ -1,3 +1,4 @@
+.pytest_cache/
 .cache/
 limix_ext.egg-info/
 limix_ext/version.py

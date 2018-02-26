@@ -5,7 +5,7 @@ import sys
 import pytest
 from numpy import array, asarray, dot, empty, hstack, ones, pi, sqrt, zeros
 from numpy.random import RandomState
-from numpy.testing import assert_almost_equal
+from numpy.testing import assert_almost_equal, assert_allclose
 
 import limix_ext as lxt
 
@@ -47,10 +47,10 @@ def test_macau():
 @pytest.mark.skipif('linux' not in sys.platform, reason="requires Linux")
 def test_macau_heritability():
 
-    # random = RandomState(139)
-    random = RandomState(int(sys.argv[1]))
-    # nsamples = 1000
-    nsamples = int(sys.argv[2])
+    random = RandomState(139)
+    # random = RandomState(int(sys.argv[1]))
+    nsamples = 100
+    # nsamples = int(sys.argv[2])
     nfeatures = 1500
 
     G = random.randn(nsamples, nfeatures) / sqrt(nfeatures)
@@ -70,7 +70,7 @@ def test_macau_heritability():
 
     K = G.dot(G.T)
     h2 = lxt.macau.heritability.binomial_estimate(y, ntrials, M, K)
-    print(h2)
+    assert_allclose(h2, 0.4196, rtol=1e-1)
 
 
 if __name__ == '__main__':
