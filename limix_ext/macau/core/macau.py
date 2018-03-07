@@ -34,7 +34,7 @@ def _run_scan(y_fp, ntrials_fp, K_fp, predictor_fp):
     return df
 
 
-def _run_heritability(y_fp, ntrials_fp, K_fp, predictor_fp):
+def _run_heritability(y_fp, ntrials_fp, K_fp, predictor_fp, NP):
     outfolder = tempfile.mkdtemp()
     here = os.path.abspath(os.path.dirname(__file__))
     cmd = [
@@ -47,6 +47,10 @@ def _run_heritability(y_fp, ntrials_fp, K_fp, predictor_fp):
         predictor_fp,
         '-k',
         K_fp,
+        '-h',
+        '0.01',
+        '0.99',
+        str(NP)
     ]
 
     logger = logging.getLogger(__name__)
@@ -103,7 +107,7 @@ def run_scan(y, ntrials, K, X):
     return np.asarray(dfs['pvalue'])
 
 
-def run_heritability(y, ntrials, K):
+def run_heritability(y, ntrials, K, NP=10):
     outfolder = tempfile.mkdtemp()
     X = np.random.randn(K.shape[0], 1)
 
@@ -132,4 +136,4 @@ def run_heritability(y, ntrials, K):
         os.path.join(outfolder, 'y.txt'), os.path.join(outfolder,
                                                        'ntrials.txt'),
         os.path.join(outfolder, 'K.txt'),
-        os.path.join(outfolder, 'predictor.txt'))
+        os.path.join(outfolder, 'predictor.txt'), NP=NP)
