@@ -1,10 +1,12 @@
+import pytest
+from numpy import asarray, dot, eye, ones, sqrt, zeros_like
 from numpy.random import RandomState
-from numpy import (sqrt, ones, asarray, zeros_like, dot, eye)
 from numpy.testing import assert_
 
 from limix_ext.stan import binomial_scan
 
 
+@pytest.mark.skipif(True, reason="too slow, not necessary")
 def test_binomial():
     random = RandomState(981)
     n = 10
